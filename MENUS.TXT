@@ -1,135 +1,134 @@
-
 * Title page menu
 *
 TPMENU
- FCB 20,12   column, row
- FDB TT1-*
+ FCB 8,21   column, row
+ FDB A@-*
  FCB 3
  FDB MRGB-*
- FCB 20,14
- FDB TT2-*
+ FCB 20,21
+ FDB B@-*
  FCB 9
  FDB MCMP-*
  FDB $FFFF
-TT1
+A@
  FCC "RGB",0
-TT2
+B@
  FCC "Composite",0
 
 * Main menu
 *
 MNMENU
- FCB 6,5 column, row
- FDB MT1-*
- FCB 15
+ FCB 12,8 column, row
+ FDB A@-*
+ FCB 14
  FDB MM1-*
- FCB 6,7
- FDB MT2-*
- FCB 15
+ FCB 12,10
+ FDB B@-*
+ FCB 11
  FDB MM2-*
- FCB 6,9
- FDB MT3-*
+ FCB 12,12
+ FDB C@-*
  FCB 15
  FDB MM3-*
- FCB 6,11
- FDB MT4-*
+ FCB 12,14
+ FDB D@-*
  FCB 15
  FDB MM4-*
- FCB 6,13
- FDB MT5-*
+ FCB 12,16
+ FDB E@-*
  FCB 15
  FDB MM5-*
- FCB 6,15
- FDB MT6-*
- FCB 15
+ FCB 12,18
+ FDB F@-*
+ FCB 14
  FDB MM6-*
- FCB 6,17
- FDB MT7-*
- FCB 15
- FDB MM7-*
  FDB $FFFF
-MT1
+A@
  FCC "Play Solitaire",0
-MT2
+B@
  FCC "Begin Again",0
-MT3
+C@
  FCC "Select a Dragon",0
-MT4
+D@
  FCC "Tournament Play",0
-MT5
+E@
  FCC "Challenge Match",0
-MT6
- FCC "Peek and Forfeit",0
-MT7
+F@
  FCC "Return to Game",0
 
 * Game screen menu
 *
 GMMENU
- FCB 9,0 column, row
- FDB GT1-* "Menu"
+ FCB 4,0 column, row
+ FDB A@-* "Menu"
  FCB 4
  FDB GM1-*
- FCB 17,0
- FDB GT2-* "Undo"
+ FCB 10,0
+ FDB B@-* "Undo"
  FCB 4
  FDB GM2-*
- FCB 25,0
- FDB GT3-* "Find"
+ FCB 16,0
+ FDB C@-* "Find"
  FCB 4
  FDB GM3-*
- FCB 35,0
- FDB GT4-* "Cancel"
+ FCB 22,0
+ FDB D@-* "Cancel"
  FCB 6
  FDB GM4-*
+ FCB 30,0
+ FDB E@-* "Peek"
+ FCB 4
+ FDB GM5-*
  FDB $FFFF
-GT1
+A@
  FCC "Menu",0
-GT2
+B@
  FCC "Undo",0
-GT3
+C@
  FCC "Find",0
-GT4
+D@
  FCC "Cancel",0
+E@
+ FCC "Peek",0
 
 * Dragon menu
 *
 DGMENU
- FCB 6,5 pairs to kong
+ FCB 12,5 pairs to kong
  FDB A@-*
- FCB 15
+ FCB 13
  FDB DM1-*
- FCB 6,7 fours galore
+ FCB 12,7 fours galore
  FDB B@-*
- FCB 15
+ FCB 12
  FDB DM2-*
- FCB 6,9 four winds
+ FCB 12,9 four winds
  FDB C@-*
- FCB 15
+ FCB 10
  FDB DM3-*
- FCB 6,11 bam bam
+ FCB 12,11 bam bam
  FDB D@-*
- FCB 15
+ FCB 7
  FDB DM4-*
- FCB 6,13 crak king
+ FCB 12,13 crak king
  FDB E@-*
- FCB 15
+ FCB 9
  FDB DM5-*
- FCB 6,15 dots across
+ FCB 12,15 dots across
  FDB F@-*
- FCB 15
+ FCB 11
  FDB DM6-*
- FCB 6,17 dragon rider
+ FCB 12,17 dragon rider
  FDB G@-*
- FCB 15
+ FCB 12
  FDB DM7-*
- FCB 6,19 dragon's song
+ FCB 12,19 dragon's song
  FDB H@-*
- FCB 15
+ FCB 13
  FDB DM8-*
- FCB 6,21 return to menu
+ FCB 12,21 return to menu
  FDB I@-*
- FCB 15
+ FCB 14
  FDB DM9-*
  FDB $FFFF
 A@
@@ -157,11 +156,11 @@ PKMENU
  FCB 20,12   column, row
  FDB A@-*
  FCB 3
- FDB PM2-*
+ FDB PM1-*
  FCB 20,14
  FDB B@-*
  FCB 2
- FDB PM1-*
+ FDB PM2-*
  FDB $FFFF
 A@
  FCC "Yes",0
@@ -171,25 +170,25 @@ B@
 * Challenge menu
 *
 CHMENU
- FCB 6,5 column, row
+ FCB 11,9 column, row
  FDB A@-*
- FCB 15
+ FCB 10
  FDB CH1-*
- FCB 6,7
+ FCB 11,11
  FDB B@-*
- FCB 15
+ FCB 10
  FDB CH2-*
- FCB 6,9
+ FCB 11,13
  FDB C@-*
- FCB 15
+ FCB 10
  FDB CH3-*
- FCB 6,11
+ FCB 11,15
  FDB D@-*
- FCB 15
+ FCB 10
  FDB CH4-*
- FCB 6,13
+ FCB 11,17
  FDB E@-*
- FCB 15
+ FCB 14
  FDB CH5-*
  FDB $FFFF
 A@
@@ -206,44 +205,32 @@ E@
 * Challenge match game screen menu
 *
 CGMENU
- FCB 9,0 column, row
- FDB A@-* "Menu"
+ FCB 4,0 column, row
+ FDB A@-* "Quit"
  FCB 4
  FDB CG1-*
- FCB 17,0
- FDB B@-* "Undo"
- FCB 4
- FDB CG2-*
- FCB 25,0
- FDB C@-* "Find"
- FCB 4
- FDB CG3-*
- FCB 35,0
- FDB D@-* "Cancel"
+ FCB 24,0
+ FDB B@-* "Cancel"
  FCB 6
- FDB CG4-*
+ FDB CG2-*
  FDB $FFFF
 A@
- FCC "Menu",0
+ FCC "Quit",0
 B@
- FCC "Undo",0
-C@
- FCC "Find",0
-D@
  FCC "Cancel",0
 
 * Tournament menu
 *
 TOMENU
- FCB 6,5 column, row
+ FCB 6,8 column, row
  FDB A@-*
  FCB 15
  FDB TO1-*
- FCB 6,7
+ FCB 6,10
  FDB B@-*
  FCB 15
  FDB TO2-*
- FCB 6,9
+ FCB 6,12
  FDB C@-*
  FCB 15
  FDB TO3-*
@@ -255,44 +242,37 @@ B@
 C@
  FCC "Return to Menu",0
 
-
 * Tournament game screen menu
 *
 TGMENU
- FCB 9,0 column, row
+ FCB 4,0 column, row
  FDB A@-* "Quit"
  FCB 4
  FDB TG1-*
- FCB 17,0
+ FCB 10,0
  FDB B@-* "Undo"
  FCB 4
  FDB TG2-*
- FCB 25,0
- FDB C@-* "Find"
- FCB 4
- FDB TG3-*
- FCB 35,0
- FDB D@-* "Cancel"
+ FCB 22,0
+ FDB C@-* "Cancel"
  FCB 6
- FDB TG4-*
+ FDB TG3-*
  FDB $FFFF
 A@
  FCC "Quit",0
 B@
  FCC "Undo",0
 C@
- FCC "Find",0
-D@
  FCC "Cancel",0
 
 * Tournament scoreboard menu
 *
 SCMENU
- FCB 32,15   column, row
+ FCB 28,15   column, row
  FDB A@-*
  FCB 3
  FDB SC1-*
- FCB 37,15
+ FCB 33,15
  FDB B@-*
  FCB 2
  FDB SC2-*
@@ -301,6 +281,23 @@ A@
  FCC "Yes",0
 B@
  FCC "No",0
+
+* Peek game screen menu
+*
+PGMENU
+ FCB 4,0 column, row
+ FDB A@-* "Quit"
+ FCB 4
+ FDB PG1-*
+ FCB 10,0
+ FDB B@-* "Undo"
+ FCB 4
+ FDB PG2-*
+ FDB $FFFF
+A@
+ FCC "Quit",0
+B@
+ FCC "Undo",0
 
 * Draw menu
 *
@@ -348,7 +345,7 @@ XCPOSL
  LEAS 1,S
 
  PULS A   get column back
- LDB #3
+ LDB #4
  MUL
  LEAX D,X
  RTS
@@ -377,11 +374,11 @@ UMENUL
  ADDB #8
  STD ITEMY2
  PULS A get column back
- LDB #6 convert column
+ LDB #8 convert column
  MUL
  STD ITEMX1
  LDA 4,U len of message
- LDB #6
+ LDB #8
  MUL
  ADDD ITEMX1
  STD ITEMX2
@@ -485,3 +482,127 @@ XMENU
 
 XMENUX
  RTS
+
+* draw menu border
+*
+BORDER
+ INC BORDF
+ LDX #SCREEN+4*160+1
+ LDB #$44
+* upper left corner detail
+ STB -160-1,X
+ STB -2*160-1,X
+ LDA #39
+* top 
+ PSHS A
+A@
+ DEC ,S
+ BLT B@
+ LBSR HLINES
+ LDB #'#
+ LBSR PUT
+ BRA A@
+B@
+ PULS A
+* upper right corner detail
+ LDB #$44
+ STB -160,X
+ STB -2*160,X
+* bottom
+ LDX #SCREEN+187*160+1
+ LDA #39
+ PSHS A
+C@
+ DEC ,S
+ BLT D@
+ LBSR HLINES
+ LDB #'#
+ LBSR PUT
+ BRA C@
+D@
+ PULS A
+* lower right corner detail
+ LDB #$44
+ STB 8*160,X
+ STB 9*160,X
+* left
+ LDX #SCREEN+4*160+1
+ LDA #24
+ PSHS A
+E@
+ DEC ,S
+ BLT F@
+ BSR VLINES
+ LDB #'#
+ LBSR PUT
+ LEAX 8*160-4,X
+ BRA E@
+F@
+ PULS A
+* lower left corner detail
+ LDB #$44
+ STB -1,X
+*right
+ LDX #SCREEN+4*160+1
+ LEAX 38*4,X
+ LDA #24
+ PSHS A
+G@
+ DEC ,S
+ BLT H@
+ BSR VLINES
+ LDB #'#
+ LBSR PUT
+ LEAX 8*160-4,X
+ BRA G@
+H@
+ PULS A
+ CLR BORDF
+ RTS
+
+VLINES
+ PSHS X
+ LDA #$44
+ LDB #8
+A@
+ STA -1,X
+ STA 4,X
+ LEAX 160,X
+ DECB
+ BNE A@
+ PULS X,PC
+
+HLINES
+ LDD #$4444
+ STD -2*160,X
+ STD -2*160+2,X
+ STD -160,X
+ STD -160+2,X
+ STD 8*160,X
+ STD 8*160+2,X
+ STD 9*160,X
+ STD 9*160+2,X
+ RTS
+
+* text menu
+*
+* U -> menu table
+*
+TMENU
+ STU CURMNU
+ LBSR BORDER
+ LDU CURMNU
+ LBSR DMENU
+A@
+ LDD SEED1 randomize
+ ADDD #1
+ STD SEED1
+ LDB #1
+ LBSR CURSOR
+ LDU CURMNU
+ LBSR UMENU
+ LDB #1
+ LBSR BUTTON
+ BEQ A@
+ LBSR XMENU
+ BRA A@

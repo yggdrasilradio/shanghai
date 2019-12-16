@@ -1,0 +1,30 @@
+CURRENT LIST OF BUGS AND DEFICIENCIES:
+(as of 5/27/87)
+
+background should be dark red. (?)
+"one-dot" tile should be 16-color tile.
+"white dragon" tile should be 16-color tile.
+title screen graphics not included.
+victory dragon graphics not included.
+tournament scoreboard needs rearranging.
+"start again" on a random dragon does not work as expected.
+colors of marks on tiles is subject to change.
+transient messages sometimes don't blank out.
+arrow cursor needs to be redone.
+3D effect lacks shadow on top and right of tiles.
+tile markings aren't strictly correct chinese characters.
+loader and copy protect not in yet.
+tournament game lacks warning chimes.
+occasional keybounce problems with tile select.
+occasional keybounce problems with tournament name entry.
+tournament name entry does not backspace correctly.
+composite color set has aliasing problems.
+second button on deluxe joystick is not sensed.
+challenge, tournament timers inaccurate on first interval.
+won't select on the far right or bottom of a tile.
+sometimes the wrong tile is selected.
+FIND sometimes erroneously says "no more moves".
+"tiles", "score" displays sometimes trashed by animation.
+transient messages sometimes trashed by animation.
+FIND flashes tile 143 briefly when no more moves.
+tile select sound needs work.

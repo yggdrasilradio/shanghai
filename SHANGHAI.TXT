@@ -4,14 +4,31 @@
 *
 SCREEN EQU $8000
 
+* TILE TABLE FORMAT:
+*  ,U tile id
+* 1,U pixel offset
+* 3,U left
+* 4,U right
+* 5,U up
+* 6,U down
+
  ORG 0
 **************** base page
+CSTAT  RMB 1
+ARROW  RMB 1
+FF91   RMB 1
+FIND1  RMB 1
+FIND2  RMB 1
+BORDF  RMB 1 "in border" flag
+FACE   RMB 5
+TLPOS  RMB 1
+TMOUT  RMB 1 number of timeouts
+SCORES RMB 2 challenge match scores
 NAMPTR RMB 2
 NAMCNT RMB 1
 TSCORE RMB 1 tournament player score
 KEYON  RMB 1
 CURMNU RMB 2 current menu
-FLAG   RMB 1
 VMOVE  RMB 1 valid move flag
 PLAYER RMB 1
 TCOLOR RMB 1 tile mark color
@@ -23,6 +40,7 @@ CTIMER RMB 1 challenge countdown timer
 DRAGID RMB 1 selected dragon
 OLDTIM RMB 1
 TICKS  RMB 1
+TOCKS  RMB 1
 SECS   RMB 1
 MINS   RMB 1
 HOURS  RMB 1
@@ -31,7 +49,6 @@ STILE2 RMB 3
 COUNT  RMB 1
 MNUPTR RMB 2
 CMASK  RMB 1
-CLRSET RMB 1
 CURSXY RMB 2
 SEED1  RMB 1
 SEED2  RMB 1
@@ -57,39 +74,40 @@ TILES  RMB 144*7
 HISTRY RMB 144
 SCBORD RMB 24*10 scoreboard
 NAME   RMB 20
-BLTILE RMB 256
+CACHE  RMB 6*10
 
  ORG $3000
 START
  ORCC #$50
  LDS #STACK
  LBSR MINIT
- LDD #0
+ LBSR TASK0
+ CLRA
+ CLRB
  TFR B,DP
  STB $FF40
  STB KEYON
- STB FLAG
  STD MNUPTR
+ STD FIND1
+ STB BORDF
  STB HFLAG
  STB LSW
  STB RSW
  STB MTIMER
  STB ROMSON
  STB TLIMIT
- STB $FF9A    black border
- LDX #BLTILE
-A@
- DECA
- BEQ Z@
- STB ,X+
- STB ,X+
- BRA A@
-Z@
+ STB ARROW
+ STB CSTAT
+
  CLR $71      hard reset
  CLR $FFD9    fast CPU
  STB $FFDF    64k mode
  
+ LDA 200
+ CMPA #123
+ BEQ A@
  LBSR RGBSET
+A@
  LBSR VINIT
 
  LBSR CLBORD clear scoreboard
@@ -109,6 +127,7 @@ Z@
 * title page
  CLR DRAGID
  LBSR CLS
+ LBSR BORDER
  LDA #9
  LDB #2
  LBSR CPOS
@@ -120,69 +139,48 @@ Z@
  LEAX 2*160,X
  LEAU TITLE2,PCR
  LBSR MSG
- LDD #0
- STD CURSXY
- LDX #SCREEN
- LBSR ARROW
+
  LEAU TPMENU,PCR
- LBSR DMENU
-TPLOOP
- LDB #1
- LBSR CURSOR
- LDD SEED1 randomize
- ADDD #1
- STD SEED1
- LEAU TPMENU,PCR
- LBSR UMENU
- LDB #1
- LBSR BUTTON
- BEQ TPLOOP
- LBSR XMENU
- BRA TPLOOP
+ LBRA TMENU
+
 MRGB
+ LDA 200
+ CMPA #123
+ BEQ MAIN
  LBSR RGBSET
  BRA MAIN
 MCMP
+ LDA 200
+ CMPA #123
+ BEQ MAIN
  LBSR CMPSET
 
 * main menu
 MAIN
 DM9
  LBSR CLS
- LDA #2 row
- LDB #2 column
+ LDA #9
+ LDB #5
  LBSR CPOS
  LEAU MNHEAD,PCR
  LBSR MSG
- LDD #0
- STD CURSXY
- LDX #SCREEN
- LBSR ARROW
  LEAU MNMENU,PCR
- LBSR DMENU
-MNLOOP
- LDB #1
- LBSR CURSOR
- LEAU MNMENU,PCR
- LBSR UMENU
- LDB #1
- LBSR BUTTON
- BEQ MNLOOP
- LBSR XMENU
- BRA MNLOOP
+ LBRA TMENU
 
+* solitaire
 MM1
+ CLR TLIMIT
+* begin again
 MM2
  LBSR GDRAGN
-MM7
+* return to game
+MM6
+ TST COUNT no tiles?
+ BEQ MM2 begin again
  LBSR CLS
 
-* init cursor arrow
- LDD #0
- STD CURSXY
- LDX #SCREEN
- LBSR ARROW
  LBSR DRAGON
+ LBSR UCOUNT
  TST TLIMIT
  LBGT CHGAME challenge game?
  LBLT TOGAME tournament game?
@@ -190,12 +188,7 @@ MM7
 *game screen menu
  LEAU GMMENU,PCR
  LBSR DMENU
- CLR STILE1
- CLR STILE1+1
- CLR STILE1+2
- CLR STILE2
- CLR STILE2+1
- CLR STILE2+2
+ LBSR CLTILE
 GMLOOP
  LDB #1
  LBSR CURSOR
@@ -226,11 +219,13 @@ GM2
 GM3
  LBSR FIND
  LBRA GMLOOP
-
 *cancel
 GM4
  LBSR CANCEL
  LBRA GMLOOP
+*peek
+GM5
+ LBRA PEEK
 
 **** process move
 MOVE
@@ -246,9 +241,13 @@ MOVE
 
 * second click on first tile?
  CMPU STILE1
- LBEQ CANCEL
+ BNE C11T  no
+ LDD FIND1 find in progress?
+ LBEQ CANCEL if not, cancel
+ LBRA RMTILE if so, remove
 
 * first click on first tile?
+C11T
  LDY STILE1
  LBEQ T1CLIK
 
@@ -260,59 +259,38 @@ MOVE
 * first click on first tile
 T1CLIK
  LBSR CLICK
- LBSR HILITE
  STU STILE1
  STB STILE1+2
+ LBSR HILITE
  RTS
 
 NTFREE
+ LBSR PING
+ LBSR CANCEL
  LEAX NTFR1,PCR
  LEAY NTFR2,PCR
  LBSR UMSG
- LBSR CANCEL
  RTS
 
 NTFR1
- FCC " Tile is",0
+ FCC "Tile is",0
 NTFR2
- FCC " not free",0
+ FCC "not free",0
 
 * first click on second tile
 T2CLIK
 
 *check to see if tiles match
- LDA ,U
  LDY STILE1
- CMPA ,Y
- BEQ RMOKAY
-
-*check seasons/flowers match exception
- ANDA #$F0
- CMPA #$30
- BEQ SEACK
- CMPA #$40
- BNE NOMATC
-
-*check flower
- LDA ,Y
- ANDA #$F0
- CMPA #$40 other is flower?
- BEQ RMOKAY
- BRA NOMATC
-
-*check season
-SEACK
- LDA ,Y
- ANDA #$F0
- CMPA #$30 other is season?
+ LBSR MATCH
  BNE NOMATC
 
 *they match, go ahead and highlight
 RMOKAY
  LBSR CLICK
- LBSR HILITE
  STU STILE2
  STB STILE2+2
+ LBSR HILITE
  RTS
 
 * remove the pair of tiles
@@ -323,35 +301,31 @@ RMTILE
  LDU STILE2
  LDB STILE2+2
  LBSR REMOVE   remove second tile
- LBSR CHIME
- LBSR REFRES   redraw screen
- CLR STILE1
- CLR STILE1+1
- CLR STILE1+2
- CLR STILE2
- CLR STILE2+1
- CLR STILE2+2
+ LBSR UCOUNT
+ LBSR CLICK
+ LBSR CLTILE
+ LBSR VICTOR   victory dragon(?)
  INC VMOVE
  RTS
 
 * The tiles don't match
 NOMATC
+ LBSR PING
+ LBSR CANCEL cancel first selection
  LEAX NOMT1,PCR
  LEAY NOMT2,PCR
  LBSR UMSG
- LBSR CANCEL cancel first selection
  RTS
 
 * Undo
 UNDO
  LDD STILE1 if move in progress
- BNE CANCEL do "cancel" instead
+ LBNE CANCEL do "cancel" instead
  LDA COUNT
  CMPA #144
  LBEQ XUNDO
  LBSR TUNDO
  LBSR TUNDO
- LBSR REFRES redraw screen
 XUNDO
  RTS
 
@@ -372,73 +346,146 @@ TUNDO
 * now U points to tile data
 * B is tile pos
  COM ,U un-delete tile
+ LBSR REFRES
  INC COUNT count it
+ LBSR UCOUNT
  RTS
 
 * Find
 FIND
- LEAX NOMT1,PCR
- LEAY NOMT2,PCR
+ LBSR CUROFF
+ LBSR CANCL
+ LDD FIND1
+ BNE FCONT
+* for i=0 to 142
+A@
+ LDA FIND1
+ CMPA #142
+ BHI Z@
+* for j=i+1 to 143
+ LDA FIND1
+ INCA
+ STA FIND2
+B@
+ LDA FIND2
+ CMPA #143
+ BHI Y@
+* link to tile 1
+ LDA FIND1
+ INCA
+ STA STILE1+2
+ DECA
+ LDB #7
+ MUL
+ LDU #TILES
+ LEAU D,U
+ STU STILE1
+* link to tile 2
+ LDA FIND2
+ INCA
+ STA STILE2+2
+ DECA
+ LDB #7
+ MUL
+ LDU #TILES
+ LEAU D,U
+ STU STILE2
+ LBSR FREE 1st tile free?
+ BNE N@
+ LDU STILE1
+ LBSR FREE 2nd tile free?
+ BNE N@
+ LDU STILE1 identical tiles?
+ CMPU STILE2
+ BEQ N@
+ LDY STILE2
+ LBSR MATCH tiles match?
+ BNE N@
+*found something!
+ LDU STILE1
+ LDB STILE1+2
+ LBSR REFRES
+ LDU STILE2
+ LDB STILE2+2
+ LBSR REFRES
+ LBSR UCOUNT
+ LBSR CURON
+ RTS
+* next j
+FCONT
+N@
+ INC FIND2
+ BRA B@
+Y@
+* next i
+ INC FIND1
+ BRA A@
+*didn't find anything
+Z@
+ LBSR PING
+ LBSR CANCEL
+ LEAX NMM1,PCR "No more"
+ LEAY NMM2,PCR " Moves"
  LBSR UMSG
- LBSR CHIME
+ CLRA
+ CLRB
+ STD FIND1
+ LBSR CURON
  RTS
 
+NMM1
+ FCC " No more",0
+NMM2
+ FCC "  moves",0
+
 NOMT1
- FCC " Tile does",0
+ FCC "Tile does",0
 NOMT2
- FCC " not match",0
+ FCC "not match",0
 
 * Cancel
 CANCEL
+ CLRA
+ CLRB
+ STD FIND1 cancel find sequence
+CANCL
  LDD STILE1
- BNE A@
- LDD STILE1
- BNE A@
- CLR STILE1
- CLR STILE1+1
- CLR STILE1+2
+ BEQ Z@
+ LDD STILE2
+ BEQ A@
+* de-highlight tile 2
+ LDU STILE2
+ LDB STILE2+2
  CLR STILE2
  CLR STILE2+1
  CLR STILE2+2
- RTS
+ LBSR REFRES
 A@
+* de-highlight tile 1
+ LDU STILE1
+ LDB STILE1+2
  CLR STILE1
  CLR STILE1+1
  CLR STILE1+2
- CLR STILE2
- CLR STILE2+1
- CLR STILE2+2
- LBSR REFRES redraw screen
+ LBSR REFRES
+Z@
  RTS
 
 TOHEAD
- FCC "Tournament - Select a time"
+ FCC "Tournament - Select time"
  FCC " limit",0
 
 * Tournament menu
 MM4
  LBSR CLS
- LDA #2 row
- LDB #2 column
+ LDA #4
+ LDB #5
  LBSR CPOS
  LEAU TOHEAD,PCR
  LBSR MSG
- LDD #0
- STD CURSXY
- LDX #SCREEN
- LBSR ARROW
  LEAU TOMENU,PCR
- LBSR DMENU
-TOLOOP
- LDB #1
- LBSR CURSOR
- LEAU TOMENU,PCR
- LBSR UMENU
- LDB #1
- LBSR BUTTON
- BEQ TOLOOP
- LBSR XMENU
- BRA TOLOOP
+ LBRA TMENU
+
 TO1
  LDA #-5
  BRA Z@
@@ -451,7 +498,7 @@ Z@
  LBSR DMENU
  LBSR GETNAM
  CLR TSCORE
- LBRA MM1
+ LBRA MM2
 TO3
  LBRA MAIN
 
@@ -459,12 +506,7 @@ TO3
 TOGAME
  LEAU TGMENU,PCR
  LBSR DMENU
- CLR STILE1
- CLR STILE1+1
- CLR STILE1+2
- CLR STILE2
- CLR STILE2+1
- CLR STILE2+2
+ LBSR CLTILE
 
  LBSR UUTIME
 
@@ -508,11 +550,11 @@ ENTOUR
  LBSR POST   post score to scoreboard
  LBSR PTBORD display scoreboard
  LBEQ MAIN   tournament over
- LBRA MM1    continue tournament
+ LBRA MM2    continue tournament
 
 *** tournament game menu bar options
 
-*menu
+*quit
 TG1
  LBRA ENTOUR
 *undo
@@ -523,12 +565,8 @@ TG2
  DEC TSCORE
  LBSR UTSCOR back up score
  LBRA TGLOOP
-*find
-TG3
- LBSR FIND
- LBRA TGLOOP
 *cancel
-TG4
+TG3
  LBSR CANCEL
  LBRA TGLOOP
 
@@ -545,15 +583,13 @@ DMHEAD
 CHGAME
  LEAU CGMENU,PCR
  LBSR DMENU
- CLR STILE1
- CLR STILE1+1
- CLR STILE1+2
- CLR STILE2
- CLR STILE2+1
- CLR STILE2+2
-
+ LBSR CLTILE
+ CLR TSCORE
+ CLR SCORES
+ CLR SCORES+1
+ CLR TMOUT
  LBSR UUTIME
-
+ LBSR UTSCOR
  LDA #1
  STA PLAYER
  LEAX PLAYR1,PCR
@@ -585,9 +621,31 @@ CGLOOP
 
 *** turn is over
 ENTURN
+* timed out
  LBSR CANCEL
  LBSR CHIME
+ INC TMOUT
+ LDA TMOUT
+ CMPA #4
+ LBEQ CHDONE
+ BRA Z@
 ENTU0
+* player scored
+ CLR TMOUT
+ INC TSCORE
+Z@
+ TST COUNT check for no more tiles
+ LBEQ CHDONE
+ LDX #SCORES-1
+ LDA PLAYER
+ LEAX A,X
+ LDB TSCORE
+ STB ,X   put score away
+ LBSR UTSCOR show score
+ LBSR CUROFF
+ LBSR DELAY
+ LBSR CURON
+* change to next player
  LDA PLAYER
  LDB #1
  LEAX PLAYR1,PCR
@@ -599,7 +657,13 @@ ENTU0
 A@
  STB PLAYER
  LBSR UMSG
- LDA TLIMIT
+ LDX #SCORES-1
+ LDB PLAYER
+ LEAX B,X
+ LDA ,X
+ STA TSCORE next players score
+ LBSR UTSCOR
+ LDA TLIMIT reset timer
  STA CTIMER
  LBRA CGLOOP
 
@@ -610,76 +674,37 @@ PLAYR2
 
 *** challenge game menu bar options
 
-*menu
+*quit
 CG1
- LBRA MAIN
-*undo
-CG2
- LBSR UNDO
- LBRA CGLOOP
-*find
-CG3
- LBSR FIND
- LBRA CGLOOP
+ LBRA CHDONE
 *cancel
-CG4
+CG2
  LBSR CANCEL
  LBRA CGLOOP
 
-* a short delay
+* Challenge match done
+CHDONE
+ LBSR CHBORD
+ LBRA MAIN
+
+* tile select sound
 *
 CLICK
  PSHS D
- LDA $FF23
- PSHS A
- ORA #8
- STA $FF23
- LDA $FF01
- PSHS A
- ANDA #$F7
- STA $FF01
- LDA $FF03
- PSHS A
- ANDA #$F7
- STA $FF03
- CLRA
- CLRB
-DLOOP
- SUBD #1
- STB $FF20
- BNE DLOOP
- PULS A
- STA $FF03
- PULS A
- STA $FF01
- PULS A
- STA $FF23
+ LBSR CLIK
  PULS D,PC
 
 * Dragon menu
 MM3
  LBSR CLS
- LDA #2 row
- LDB #2 column
+ LDA #9
+ LDB #2
  LBSR CPOS
  LEAU DMHEAD,PCR
  LBSR MSG
- LDD #0
- STD CURSXY
- LDX #SCREEN
- LBSR ARROW
  LEAU DGMENU,PCR
- LBSR DMENU
-DGLOOP
- LDB #1
- LBSR CURSOR
- LEAU DGMENU,PCR
- LBSR UMENU
- LDB #1
- LBSR BUTTON
- BEQ DGLOOP
- LBSR XMENU
- LBRA DGLOOP
+ LBRA TMENU
+
 DM1
  LDB #1
  BRA DMCOM
@@ -712,118 +737,108 @@ PKHEAD
  FCC " game?",0
 
 * Peek menu
-MM6
+PEEK
  LBSR CLS
- LDA #2 row
- LDB #2 column
+ LDA #2
+ LDB #6
  LBSR CPOS
  LEAU PKHEAD,PCR
  LBSR MSG
- LDD #0
- STD CURSXY
- LDX #SCREEN
- LBSR ARROW
  LEAU PKMENU,PCR
+ LBRA TMENU
+
+* No
+PM2
+ LBRA MM2
+* Yes
+PM1
+
+* Peek game
+
+ LBSR CLS
+ LBSR DRAGON
+ LBSR UCOUNT
+
+*game screen menu
+ LEAU PGMENU,PCR
  LBSR DMENU
-PKLOOP
+ LBSR CLTILE
+PGLOOP
  LDB #1
  LBSR CURSOR
- LEAU PKMENU,PCR
+ LEAU PGMENU,PCR
  LBSR UMENU
  LDB #1
  LBSR BUTTON
- BEQ PKLOOP
+ BEQ PGLOOP
  LBSR XMENU
- BRA PKLOOP
-PM1
-PM2
+
+*tile selected?
+ LBSR SELECT
+ TSTB
+ BEQ PGLOOP
+ LBSR REMOVE
+ LBSR UCOUNT
+ LBSR CLICK
+ BRA PGLOOP
+
+*** peek game menu bar options
+
+*quit
+PG1
+ LDA 200   check magic flag
+ CMPA #123
+ LBEQ MAIN
+ CLR COUNT prevent cheating
  LBRA MAIN
+*undo
+PG2
+ LDA COUNT
+ CMPA #144
+ LBEQ PGLOOP
+ LBSR TUNDO
+ LBRA PGLOOP
 
 CHHEAD
- FCC "CHALLENGE MATCH - Select a time"
+ FCC "CHALLENGE MATCH - Select time"
  FCC " limit",0
 
 * Challenge menu
 MM5
  LBSR CLS
- LDA #2 row
- LDB #2 column
+ LDA #2
+ LDB #6
  LBSR CPOS
  LEAU CHHEAD,PCR
  LBSR MSG
- LDD #0
- STD CURSXY
- LDX #SCREEN
- LBSR ARROW
  LEAU CHMENU,PCR
- LBSR DMENU
-CHLOOP
- LDB #1
- LBSR CURSOR
- LEAU CHMENU,PCR
- LBSR UMENU
- LDB #1
- LBSR BUTTON
- BEQ CHLOOP
- LBSR XMENU
- BRA CHLOOP
+ LBRA TMENU
+
 CH1
  LDA #10
  STA TLIMIT
- LBRA MM1
+ LBRA MM2
 CH2
  LDA #20
  STA TLIMIT
- LBRA MM1
+ LBRA MM2
 CH3
  LDA #30
  STA TLIMIT
- LBRA MM1
+ LBRA MM2
 CH4
  LDA #60
  STA TLIMIT
- LBRA MM1
+ LBRA MM2
 CH5
  LBRA MAIN
-
-XBY2
- PSHS D
- TFR X,D
- LSRA
- RORB
- TFR D,X
- PULS D,PC
 
 * Highlight tile
 * U points to entry in tile table,
 * B contains tile position (1-144)
 HILITE
  PSHS D,X,Y,U
- LBSR CUROFF
- LDX 1,U      voffset
- TFR B,A
- LDB ,U       tile id
- LEAU BLANKH,PCR highlighted blank tile
-
- CMPA #88     1st level?
- BLO HHHH
- LEAX -320*2+2,X
- CMPA #124    2nd level?
- BLO HHHH
- LEAX -320*2+2,X
- CMPA #140    3rd level?
- BLO HHHH
- LEAX -320*2+2,X
- CMPA #144    4th level?
- BLO HHHH
- LEAX -320*2+2,X
-
-HHHH
- PSHS B
- LBSR TILE    draw blank tile
- PULS B
- LBSR MKTILE  draw markings on tile
- LBSR CURON
+ LBSR REFRES
  PULS D,X,Y,U,PC
 
 * Remove tile
@@ -839,36 +854,37 @@ REMOVE
  PULS B
  STB ,X     put into history list
  COM ,U     that tile is removed
- RTS
-
-*toggle color set
-TCSET
- TST CLRSET
- BEQ CSET
- LBSR RGBSET
- RTS
-CSET
- LBSR CMPSET
+ LBSR REFRES
  RTS
 
 *CMP Color set
 CMPSET
- CLR CLRSET
- INC CLRSET
+ LBSR VSYNC
  LDA #0     background black 0
  STA $FFB0
- LDA #35    border yellow    1
+ LDA #37    border yellow    1
  STA $FFB1
- LDA #60    border cyan      2
+ LDA #26    dark purple      2
  STA $FFB2
- LDA #40    border magenta   3
+ LDA #21    orange/brown     3
  STA $FFB3
- LDA #46    border green     4
+ LDA #20    green            4
  STA $FFB4
- LDA #21    dark red         5
+ LDA #7     dark red         5
  STA $FFB5
- LDA #26    blue             6
+ LDA #12    blue             6
  STA $FFB6
+ LDA #11    dark blue        7
+ STA $FFB7
+ LDA #38                     8
+ STA $FFB8
+ LDA #11    background dkblu 9
+ STA $FFB9
+ STA $FF9A
+ LDA #32                     B
+ STA $FFBB
+ LDA #52                     C
+ STA $FFBC
  LDA #63    blinking hilite  D
  STA $FFBD
  LDA #32    tile grey        E
@@ -879,215 +895,101 @@ CMPSET
 
 *RGB Color set
 RGBSET
- LDA 200
- CMPA #123
- BEQ XRGB
- CLR CLRSET
- LDA #0     background black 0
+ LBSR VSYNC
+ LDA #0     black            0
  STA $FFB0
- LDA #55    border yellow    1
+ LDA #55    edge yellow      1
  STA $FFB1
- LDA #59    border cyan      2
+ LDA #40    dark purple      2
  STA $FFB2
- LDA #61    border magenta   3
+ LDA #34    pumpkin orange   3
  STA $FFB3
- LDA #30    border green     4
+ LDA #20    dark green       4
  STA $FFB4
- LDA #32    dark red         5
+ LDA #36    dark red         5
  STA $FFB5
  LDA #13    blue             6
  STA $FFB6
+ LDA #12    dark blue        7
+ STA $FFB7
+ LDA #38    light orange     8
+ STA $FFB8
+ LDA #12    background dkblu 9
+ STA $FFB9
+ STA $FF9A
+ LDA #56    tile light grey  B
+ STA $FFBB
+ LDA #62    tile pale yellow C
+ STA $FFBC
  LDA #63    blinking hilite  D
  STA $FFBD
- LDA #56    tile grey        E
+ LDA #56    tile dark grey   E
  STA $FFBE
  LDA #63    tile white       F
  STA $FFBF
 XRGB
  RTS
 
+* complete 16-color blank tile
+BLANK
  FDB $EEEE,$EEEE,$EEEE,$EEEE,$EEEE,$E000
- FDB $EE11,$1111,$1111,$1111,$111E,$E000
- FDB $1111,$1111,$1111,$1111,$1111,$E000
- FDB $1111,$1F11,$F1F1,$F1F1,$1111,$E000
- FDB $111F,$1F1F,$1F1F,$1F1F,$1111,$E000
- FDB $1111,$F1F1,$F1F1,$F1F1,$F111,$E000
- FDB $111F,$1F1F,$FFFF,$FF1F,$FF11,$E000
- FDB $1111,$FFFF,$FFFF,$FFFF,$F111,$E000
- FDB $111F,$1F1F,$FFFF,$FFF1,$1F11,$E000
- FDB $111F,$F1FF,$FFFF,$FFFF,$FF11,$E000
- FDB $111F,$1F1F,$FFFF,$FFF1,$1F11,$E000
- FDB $1111,$FFFF,$FFFF,$FFFF,$F111,$E000
- FDB $111F,$1F1F,$FFFF,$F1FF,$1F11,$E000
- FDB $1111,$FFFF,$FFFF,$FFF1,$F111,$E000
- FDB $111F,$1F1F,$FFFF,$FF1F,$FF11,$E000
- FDB $1111,$FFFF,$FFFF,$FFFF,$F111,$E000
- FDB $111F,$1F1F,$FFFF,$FFF1,$1F11,$E000
- FDB $111F,$F1FF,$FFFF,$F1FF,$FF11,$E000
- FDB $111F,$1F1F,$1F1F,$1F1F,$1F11,$E000
- FDB $1111,$F1F1,$F1F1,$F1F1,$F111,$E000
- FDB $1111,$1F1F,$1F1F,$1F1F,$1111,$E000
- FDB $1111,$1111,$1111,$1111,$1111,$E000
- FDB $1111,$1111,$1111,$1111,$1111,$E000
- FDB $EE11,$1111,$1111,$1111,$111E,$E000
-
-* complete 16-color blank tiles
-BLANK1
- FDB $E111,$1111,$1111,$1111,$1111,$1000
- FDB $E1FF,$1F1F,$1F11,$1111,$1111,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FF11,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $EE11,$1111,$1111,$1111,$1111,$E000
- FDB $EEEE,$EEEE,$EEEE,$EEEE,$EEEE,$E000
-BLANK2
- FDB $E222,$2222,$2222,$2222,$2222,$2000
- FDB $E2FF,$2F2F,$2F22,$2222,$2222,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FF22,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $E2FF,$FFFF,$FFFF,$FFFF,$FFF2,$2000
- FDB $EE22,$2222,$2222,$2222,$2222,$E000
- FDB $EEEE,$EEEE,$EEEE,$EEEE,$EEEE,$E000
-BLANK3
- FDB $E333,$3333,$3333,$3333,$3333,$3000
- FDB $E3FF,$3F3F,$3F33,$3333,$3333,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FF33,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $E3FF,$FFFF,$FFFF,$FFFF,$FFF3,$3000
- FDB $EE33,$3333,$3333,$3333,$3333,$E000
- FDB $EEEE,$EEEE,$EEEE,$EEEE,$EEEE,$E000
-BLANK4
- FDB $E444,$4444,$4444,$4444,$4444,$4000
- FDB $E4FF,$4F4F,$4F44,$4444,$4444,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FF44,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $E4FF,$FFFF,$FFFF,$FFFF,$FFF4,$4000
- FDB $EE44,$4444,$4444,$4444,$4444,$E000
- FDB $EEEE,$EEEE,$EEEE,$EEEE,$EEEE,$E000
-BLANK5
- FDB $E111,$1111,$1111,$1111,$1111,$1000
- FDB $E1FF,$1F1F,$1F11,$1111,$1111,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FF11,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $E1FF,$FFFF,$FFFF,$FFFF,$FFF1,$1000
- FDB $EE11,$1111,$1111,$1111,$1111,$E000
- FDB $EEEE,$EEEE,$EEEE,$EEEE,$EEEE,$E000
+ FDB $CCCC,$CCCC,$CCCC,$CCCC,$CCCC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFCC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCFF,$FFFF,$FFFF,$FFFF,$FFFC,$E000
+ FDB $CCCC,$CCCC,$CCCC,$CCCC,$CCCC,$E000
+ FDB $CCCC,$CCCC,$CCCC,$CCCC,$CCCC,$E000
 BLANKH
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EDDD,$DDDD,$DDDD,$DDDD,$DDDD,$D000
- FDB $EEDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
  FDB $EEEE,$EEEE,$EEEE,$EEEE,$EEEE,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
+ FDB $DDDD,$DDDD,$DDDD,$DDDD,$DDDD,$E000
 
 *Clear screen
 CLS
+ CLR ARROW
+ CLR CSTAT
+ CLR MTIMER
+CLSX
  LDX #$7D00
- CLRA
- CLRB
+ LDD #$9999
  LDU #SCREEN
 CLS0
  STD ,U++
@@ -1121,22 +1023,18 @@ VINIT
 *LDB #$7E 225 lpf
  LDB #$3E 200 lpf
  STB $FF99 video resolution register
- LDA $FF91 force task zero
- ANDA #$FE
- STA $FF91
  CLR $FF9F horiz scroll
 *set screen location
-SCLOC
- TST FLAG
- BEQ TR0
+*TST FLAG
+*BEQ TR0
 * task one, so change to
 * task one screen
- LDD #$C000
- BRA SCLOC0
+*LDD #$F000
+*BRA SCLOC0
 * task zero, so change to
 * task zero screen
 TR0
- LDD #$F000
+ LDD #$C000
 
 SCLOC0
  STA $FF9D
@@ -1342,167 +1240,18 @@ OLY
  ORA ,Y
  STA ,Y+
 
- LDA ,U+     pixel 2 and 3
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
+ LBSR TWOPXL 2 and 3
+ LBSR TWOPXL 4 and 5
+ LBSR TWOPXL 6 and 7
+ LBSR TWOPXL 8 and 9
+ LBSR TWOPXL 10 and 11
+ LBSR TWOPXL 12 and 13
+ LBSR TWOPXL 14 and 15
+ LBSR TWOPXL 16 and 17
+ LBSR TWOPXL 18 and 19
+ LBSR TWOPXL 20 and 21
 
- LDA ,U+     pixel 4 and 5
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LDA ,U+     pixel 6 and 7
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LDA ,U+     pixel 8 and 9
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LDA ,U+     pixel 10 and 11
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LDA ,U+     pixel 12 and 13
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LDA ,U+     pixel 14 and 15
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LDA ,U+     pixel 16 and 17
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LDA ,U+     pixel 18 and 19
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LDA ,U+     pixel 20 and 21
- ANDA #$0F
- LSLA
- LSLA
- LSLA
- LSLA
- LDB ,U
- ANDB #$F0
- LSRB
- LSRB
- LSRB
- LSRB
- PSHS B
- ORA ,S+
- STA ,Y+
-
- LEAU 2,U was 1
+ LEAU 2,U
 
  LEAX 160,X go to next screen row
  LBRA OLY
@@ -1511,94 +1260,44 @@ XOLY
  PULS X,U
  RTS
 
+
+TWOPXL
+ LDA ,U+
+ LDB ,U
+ ANDB #$F0
+ LSLB
+ ROLA
+ LSLB
+ ROLA
+ LSLB
+ ROLA
+ LSLB
+ ROLA
+ STA ,Y+
+ RTS
+
 *Draw a dragon
+*
 DRAGON
- LDA #$FF
- PSHS A
-* For all the tiles
-DRDL
- INC ,S
- LDB ,S
- CMPB #144
- BEQ XDRDL
- LDU #TILES
- LDA #7
- MUL
- LEAU D,U
-* U -> tile table
-*  ,U tile id
-* 1,U voff
-* 3,U left
-* 4,U right
-* 5,U up
-* 6,U down
- TST ,U     does tile exist?
- BLE DRDL   removed ** BEQ
- LDA ,S     (tiles 140-144 are
- CMPA #139  always visible)
- BHS DRD0
- TST 5,U    any tile above it?
- BEQ DRD0   never was one
-* might be tile above it, unless
-* that tile has been removed
- PSHS U    save old tile
- LDA 5,U   tile above it
+ LEAX BASES,PCR
+A@
+ LDA ,X+
+ BEQ Z@
  DECA
  LDB #7
- LDU #TILES
  MUL
+ LDU #TILES
  LEAU D,U
- LDA ,U    tile id of tile above it
- PULS U    get old tile back
- TSTA      did tile above it exist?
- BGT DRDL  yes, so forget it ** BNE
- 
-*go ahead and show tile
-DRD0
- LDX 1,U      video offset
- LDA ,S       tile location
- LDB ,U       tile id
- INCA
- LEAU BLANK1,PCR
- CMPA #88     1st level?
- BLO DRDD
- LEAU BLANK2,PCR
- LEAX -320*2+2,X
- CMPA #124    2nd level?
- BLO DRDD
- LEAU BLANK3,PCR
- LEAX -320*2+2,X
- CMPA #140    3rd level?
- BLO DRDD
- LEAU BLANK4,PCR
- LEAX -320*2+2,X
- CMPA #144    4th level?
- BLO DRDD
-
-*special fudge for tile 144*
- PSHS U,D,X
- LDU #BLTILE
- LBSR TILE    shadow of tile
- PULS U,D,X
-
- LEAU BLANK5,PCR
- LEAX -320*2+2,X
-
-DRDD
- PSHS B        save tile id
- LBSR TILE
- PULS B        get tile id back
- LBSR MKTILE   add tile markings
- LBRA DRDL
-
-XDRDL
- LBSR UCOUNT
- PULS A
+ LBSR TPILE
+ BRA A@
+Z@
+ LBSR DO144
  RTS
 
 *translate tile coordinate system
 FUDGE
  LEAX 8*160,X room for menu
+ LEAX 2,X right justify
  LEAX SCREEN,X screen offset
  RTS
 
@@ -1616,15 +1315,11 @@ CURSOR
 
  INC ROMSON  tell IRQ that ROMs on
  STA $FFDE   turn on ROMs
- LDA $FF91   force task 1
- ORA #1
- STA $FF91
+ LBSR TASK1  force task 1
  JSR [$A00A] get joystick values
  CLR ROMSON  tell IRQ that ROMs off
  STA $FFDF   turn off ROMs
- LDA $FF91   force task 0
- ANDA #$FE
- STA $FF91
+ LBSR TASK0
 
  PULS B      got left
  CMPB #1     want right?
@@ -1649,142 +1344,20 @@ CUR2
  PSHS D save new xy
 
 * erase old cursor
- LDD CURSXY
- PSHS A
- LDX #SCREEN
- LDA #3
- MUL
- LDA #160
- MUL
- LEAX D,X
- LDB ,S
- LDA #5
- MUL
- LSRA
- RORB
- LEAX D,X   X now points to old cursor
- PULS B
- LBSR ARROW  erase old cursor
+ TST ARROW
+ BEQ A@
+ LBSR CUROFF
+A@
+ LDA #1
+ STA ARROW
 
 * draw new cursor
  PULS D       get new xy back
- PSHS A
  STD CURSXY
- LDX #SCREEN
- LDA #3
- MUL
- LDA #160
- MUL
- LEAX D,X
- LDB ,S
- LDA #5
- MUL
- LSRA
- RORB
- LEAX D,X    X now points to new cursor
- PULS B       get X back
- LBSR ARROW  draw new cursor
+ LBSR CURON  draw new cursor
 
 XCURS
  RTS
-
-* xor cursor arrow onto screen
-*
-* x points to screen, b is x value
-ARROW
- ANDB #1
- BEQ EVEN
-
-*Odd-boundary arrow
- LEAU ODARW,PCR
- LDA #7
- PSHS A
-
-ARL1
- DEC ,S
- BLT XARL1
-
- LDA ,X
- EORA ,U+
- STA ,X
-
- LDA 1,X
- EORA ,U+
- STA 1,X
-
- LDA 2,X
- EORA ,U+
- STA 2,X
-
- LDA 3,X
- EORA ,U+
- STA 3,X
-
- LDA 4,X
- EORA ,U+
- STA 4,X
-
- LDA 5,X
- EORA ,U+
- STA 5,X
-
- LEAX 160,X
- BRA ARL1
-XARL1
- PULS A
- BRA XARR
-
-* Even-boundary arrow
-EVEN
- LEAU EVARW,PCR
- LDA #7
- PSHS A
-
-ARL2
- DEC ,S
- BLT XARL2
-
- LDA ,X
- EORA ,U+
- STA ,X
-
- LDA 1,X
- EORA ,U+
- STA 1,X
-
- LDA 2,X
- EORA ,U+
- STA 2,X
-
- LDA 3,X
- EORA ,U+
- STA 3,X
-
- LEAX 160,X
- BRA ARL2
-XARL2
- PULS A
-
-XARR
- RTS
-
-EVARW
- FDB $FFFF,$F000
- FDB $FFFF,$0000
- FDB $FFFF,$0000
- FDB $FFFF,$F000
- FDB $F00F,$FF00
- FDB $0000,$FFF0
- FDB $0000,$0FFF
-
-ODARW
- FDB $00FF,$FFF0,$0000
- FDB $00FF,$FF00,$0000
- FDB $00FF,$FF00,$0000
- FDB $00FF,$FFF0,$0000
- FDB $00F0,$0FFF,$0000
- FDB $0000,$00FF,$F000
- FDB $0000,$000F,$FF00
  
 * Random number generator
 * Entry: B - upper limit
@@ -1966,18 +1539,24 @@ PUT9
 * A is row bits
 CROW
  PSHS A
- LDA #$22   default color is cyan
+ LDA #$FF   default color is white
  STA CMASK
+ TST BORDF  in border?
+ BEQ A@
+ LDA #$11   yellow
+ STA CMASK
+A@
  TST HFLAG
  BEQ CROWH
  LDA #$DD   highlight color white/grey
  STA CMASK
 CROWH
  PULS A
- CLR ,X
- CLR 1,X
- CLR 2,X
- CLR 3,X
+ LDB #$99   background color
+ STB ,X
+ STB 1,X
+ STB 2,X
+ STB 3,X
  LDB #$FF
  PSHS A
 CROW0
@@ -1994,15 +1573,24 @@ CROW0
  TFR B,A
  ANDA #1
  BEQ CROW1
+
+*put into right nibble
  LDA ,Y
- ORA #$0F
- ANDA CMASK
+ ANDA #$F0
+ PSHS A
+ LDA CMASK
+ ANDA #$0F
+ ORA ,S+
  STA ,Y
  BRA CROW0
 CROW1
+* left nibble
  LDA ,Y
- ORA #$F0
- ANDA CMASK
+ ANDA #$0F
+ PSHS A
+ LDA CMASK
+ ANDA #$F0
+ ORA ,S+
  STA ,Y
  BRA CROW0
 CROW2
@@ -2131,7 +1719,7 @@ SLLG
  BLO XSLL
 
  LDA TILEY  below tile?
- ADDA #22
+ ADDA #23
  CMPA CURSY
  BLO XSLL
 
@@ -2140,7 +1728,7 @@ SLLG
  BLO XSLL
 
  LDD TILEX  to right of tile?
- ADDD #19
+ ADDD #20
  CMPD CURSX
  BLO XSLL
 
@@ -2173,10 +1761,239 @@ CXYV
  TFR X,D
  RTS
 
-* remove, restore cursor arrow
-CUROFF
 CURON
  PSHS D,X,Y,U
+ TST CSTAT
+ LBNE XARW
+ LDA #1
+ STA CSTAT
+ LBSR GETCP
+ PSHS B,X
+*suck up memory at cursor
+ LDY #CACHE
+ LDA #10
+ PSHS A
+A@
+ DEC ,S
+ BLT Z@
+ LDD ,X++
+ STD ,Y++
+ LDD ,X++
+ STD ,Y++
+ LDD ,X++
+ STD ,Y++
+ LEAX 160-6,X
+ BRA A@
+Z@
+ PULS A
+ PULS B,X
+*put cursor onto screen
+ ANDB #1
+ LBEQ EVARW
+
+*odd arrow
+ LDA ,X 1st row
+ ORA #$0F
+ STA ,X
+ LDD #$FFFF
+ STD 1,X
+ STA 3,X
+ LEAX 160,X
+
+ LDA ,X 2nd row
+ ORA #$0F
+ STA ,X
+ CLR 1,X
+ CLR 2,X
+ LDA 3,X
+ ORA #$F0
+ STA 3,X
+ LEAX 160,X
+
+ LDA ,X 3rd row
+ ORA #$0F
+ STA ,X
+ CLR 1,X
+ LDA #$0F
+ STA 2,X
+ LEAX 160,X
+
+ LDA ,X 4th row
+ ORA #$0F
+ STA ,X
+ CLR 1,X
+ CLR 2,X
+ LDA 3,X
+ ORA #$F0
+ STA 3,X
+ LEAX 160,X
+
+ LDA ,X 5th row
+ ORA #$0F
+ STA ,X
+ LDA #$0F
+ STA 1,X
+ CLR 2,X
+ STA 3,X
+ LEAX 160,X
+
+ LDA ,X 6th row
+ ORA #$0F
+ STA ,X
+ LDA 1,X
+ ORA #$F0
+ STA 1,X
+ LDA #$F0
+ STA 2,X
+ CLR 3,X
+ LDA 4,X
+ ORA #$F0
+ STA 4,X
+ LEAX 160,X
+
+ LDA ,X 7th row
+ ORA #$0F
+ STA ,X
+ LDA 2,X
+ ORA #$0F
+ STA 2,X
+ CLR 3,X
+ LDA #$0F
+ STA 4,X
+ LEAX 160,X
+
+ LDA #$F0 8th row
+ STA 3,X
+ CLR 4,X
+ LDA 5,X
+ ORA #$F0
+ STA 5,X
+ LEAX 160,X
+
+ LDA 3,X 9th row
+ ORA #$0F
+ STA 3,X
+ LDA #$0F
+ STA 4,X
+ LEAX 160,X
+
+ LDA 4,X
+ ORA #$F0
+ STA 4,X
+
+ LBRA XARW
+
+EVARW
+
+*even arrow
+ LDD #$FFFF 1st row
+ STD ,X
+ STA 2,X
+ LDA 3,X
+ ORA #$F0
+ STA 3,X
+ LEAX 160,X
+
+ LDD #$F00F 2nd row
+ STA ,X
+ CLR 1,X
+ STB 2,X
+ LEAX 160,X
+
+ STA ,X 3rd row
+ CLR 1,X
+ LDA 2,X
+ ORA #$F0
+ STA 2,X
+ LEAX 160,X
+
+ LDD #$F00F 4th row
+ STA ,X
+ CLR 1,X
+ STB 2,X
+ LEAX 160,X
+
+ STA ,X 5th row
+ STA 1,X
+ CLR 2,X
+ LDA 3,X
+ ORA #$F0
+ STA 3,X
+ LEAX 160,X
+
+ LDD #$FF0F 6th row
+ STA ,X
+ CLR 2,X
+ STB 3,X
+ LDA 1,X
+ ORA #$0F
+ STA 1,X
+ LEAX 160,X
+
+ LDA #$F0 7th row
+ STA 2,X
+ LDA ,X
+ ORA #$F0
+ STA ,X
+ CLR 3,X
+ LDA 4,X
+ ORA #$F0
+ STA 4,X
+ LEAX 160,X
+
+ LDA 2,X 8th row
+ ORA #$0F
+ STA 2,X
+ CLR 3,X
+ LDA #$0F
+ STA 4,X
+ LEAX 160,X
+
+ LDA #$F0 9th row
+ STA 3,X
+ LDA 4,X
+ ORA #$F0
+ STA 4,X
+ LEAX 160,X
+
+ LDA 3,X 10th row
+ ORA #$0F
+ STA 3,X
+
+XARW
+ PULS D,X,Y,U
+ RTS
+
+* 
+CUROFF
+ PSHS D,X,Y,U
+ TST CSTAT
+ BEQ X@
+ CLR CSTAT
+ LBSR GETCP
+*put back memory
+ LDY #CACHE
+ LDA #10
+ PSHS A
+A@
+ DEC ,S
+ BLT Z@
+ LDD ,Y++
+ STD ,X++
+ LDD ,Y++
+ STD ,X++
+ LDD ,Y++
+ STD ,X++
+ LEAX 160-6,X
+ BRA A@
+Z@
+ PULS A
+X@
+ PULS D,X,Y,U
+ RTS
+
+*get cursor byte pointer
+GETCP
  LDD CURSXY
  PSHS A
  LDX #SCREEN
@@ -2191,10 +2008,10 @@ CURON
  LSRA
  RORB
  LEAX D,X
+*x is now byte pointer
  PULS B
- LBSR ARROW
- PULS D,X,Y,U
  RTS
+
 
 * PRINT NUMBER ROUTINE
 * D = NUMBER
@@ -2282,13 +2099,13 @@ UCOUNT
  LDA #2
  LDB #19
  LBSR CPOS
- LEAX 160,X
+ LEAX 4*160,X
  LEAU UTMSG,PCR
  LBSR MSG
  LDA #3
  LDB #20
  LBSR CPOS
- LEAX 160*2,X
+ LEAX 5*160,X
  LDB COUNT
  CLRA
  LBSR PRTNUM
@@ -2300,10 +2117,13 @@ UTMSG
 IRQ
  LDA $FF02 clear interrupt
  STA $FFDF turn off ROMs
+ CLRA
+ STA $FF91 set task 0
  INC TICKS
+ INC TOCKS
 
 * flash highlight color
- LDA TICKS
+ LDA TOCKS
  ANDA #8
  BEQ IRQH0
 
@@ -2313,7 +2133,7 @@ IRQH1
  BRA IRQ0
 
 IRQH0
- LDA $FFBE
+ LDA $FFBB
  STA $FFBD
 
 IRQ0
@@ -2369,6 +2189,8 @@ IRQF
  BEQ XXIRQ   on?  if so, turn em on
  STA $FFDE
 XXIRQ
+ LDA FF91
+ STA $FF91
  RTI
 
 * Display two digits
@@ -2416,9 +2238,10 @@ X2IGN
 *
 UUTIME
  PSHS D,X,Y,U
- LDA #1
+ LDA #2
  LDB #5
  LBSR CPOS
+ LEAX -4*160+2,X
  TST TLIMIT
  BEQ Z@
  LEAU TSECS,PCR
@@ -2429,6 +2252,10 @@ A@
  LBSR MSG    update time heading
  LDA #255
  STA OLDTIM  force time update
+ CLR HOURS
+ CLR MINS
+ CLR SECS
+ CLR TICKS
  LBSR UTIME  update time value
 Z@
  PULS D,X,Y,U,PC
@@ -2447,9 +2274,10 @@ UTIME
  BEQ XUTIME
  STB OLDTIM
  LBSR CUROFF
- LDA #2 column
+ LDA #3 column
  LDB #6 row
  LBSR CPOS
+ LEAX -3*160+2,X
  LDY #0
  LDB CTIMER
  BGE C@
@@ -2465,21 +2293,21 @@ XUTIME
 * Y -> message line 2 (0 if none)
 *
 UMSG
- LDA #120   set timer for message area
- STA MTIMER
+ LDA #240   set timer for message area
+ STA MTIMER = 4 seconds
  PSHS Y
  PSHS X
 
  LBSR CLMSG  clear message area
 
- LDA #39     message first line
+ LDA #30     message first line
  LDB #5
  LBSR CPOS
  LEAX -160*4,X
  LDU ,S++
  LBSR MSG
 
- LDA #39     message second line
+ LDA #30     message second line
  LDB #6
  LBSR CPOS
  LEAX -160*4,X
@@ -2490,19 +2318,19 @@ UMSG
  LBSR MSG
 
 XUMSG
- LDA #120
+ LDA #240
  STA MTIMER
  RTS
 
 * clear message area
 CLMSG
  LBSR CUROFF
- LDA #39
+ LDA #30
  LDB #5
  LBSR CPOS
  LEAX -160*4,X
  LBSR CLAREA
- LDA #39
+ LDA #30
  LDB #6
  LBSR CPOS
  LEAX -160*4,X
@@ -2516,8 +2344,7 @@ CLMSG
 CLAREA
  LDA #8
  PSHS A
- CLRA
- CLRB
+ LDD #$9999
 CLAL
  DEC ,S
  BLT XCLAL
@@ -2554,12 +2381,26 @@ XCLAL
 FREE
  PSHS B
  PSHS U
- TST 3,U
- BEQ YFREE
- TST 4,U
- BEQ YFREE
+
+*check tile existence
+ TST ,U
+ BLE NFREE
+
+*check above tile
+ LDB 5,U
+ BEQ C@
+ LDA #7
+ DECB
+ MUL
+ LDU #TILES
+ LEAU D,U
+ TST ,U
+ BGT NFREE
+C@
 *check left tile
+ LDU ,S
  LDB 3,U
+ BEQ YFREE
  LDA #7
  DECB
  MUL
@@ -2570,6 +2411,7 @@ FREE
 *check right tile
  LDU ,S
  LDB 4,U
+ BEQ YFREE
  LDA #7
  DECB
  MUL
@@ -2597,27 +2439,27 @@ YFREE
 * get tile mark color
 * B is tile id
 GCOLOR
- PSHS D,X,Y,U
- CLR TCOLOR
- LDA #30
- STA TCOLC
+ PSHS X,Y,U,A
+ PSHS B
+ LEAX COTBL,PCR
+ CMPB #DRA+2 red dragon
+ BEQ RDDRA
+ CMPB #DRA+3 green dragon
+ BEQ GRDRA
+ CMPB #BAM+1 one bam
+ BEQ BRDRA
  ANDB #$F0
- CMPB #CRK
- BEQ CCRK0
- CMPB #FLO
- BEQ CFLO0
  CMPB #SEA
- BEQ CSEA0
- LBRA XGCOLR
-CSEA0
- LEAX CSEA,PCR
- BRA CCONT
-CFLO0
- LEAX CFLO,PCR
- BRA CCONT
-CCRK0
- LEAX CCRK,PCR
-CCONT
+ BEQ SEASON
+ LSRB
+ LSRB
+ LSRB
+ LSRB
+ DECB
+ LDA #4
+ MUL
+ LEAX D,X
+GCCONT
  STX TCOLP
  LDA ,X
  STA TCOLC
@@ -2625,20 +2467,103 @@ CCONT
  STA TCOLOR
 
 XGCOLR
- PULS D,X,Y,U,PC
+ PULS B
+ PULS A,X,Y,U,PC
 
-CCRK FCB 8
- FCB $55 dark red
- FCB 30
- FCB 0
+* exceptions for seasons
+SEASON
+ LDB ,S
+ ANDB #$0F
+ DECB
+ LDA #4
+ MUL
+ LEAX SEACL,PCR
+ LEAX D,X
+ BRA GCCONT
 
-CFLO FCB 13
+* colors for seasons
+SEACL
+*spring
+ FCB 13
  FCB $66 blue
+ FCB 30
+ FCB 0   black
+*summer
+ FCB 13
+ FCB $88 orange
+ FCB 30
+ FCB 0   black
+*autumn
+ FCB 13
+ FCB $33 tan
+ FCB 30
+ FCB 0   black
+*winter
+ FCB 13
+ FCB 0   black
+ FCB 30
+ FCB 0   black
+
+BRDRA
+ LEAX ONEBAM,PCR
+ BRA GCCONT
+RDDRA
+ LEAX -2,X
+ BRA GCCONT
+GRDRA
+ LEAX -4,X
+ BRA GCCONT
+
+ONEBAM
+ FCB 15
+ FCB $44 green
+ FCB 30
+ FCB $33 brown
+
+*green dragon
+ FCB 30
+ FCB $44 green
+
+*red dragon
+ FCB 30
+ FCB $55 dark red
+
+COTBL
+*dragons
  FCB 30
  FCB 0 black
-
-CSEA FCB 30
+ FCB 0
+ FCB 0
+*winds
+ FCB 30
+ FCB $55 red
+ FCB 0
+ FCB 0
+*seasons
+ FCB 13
+ FCB $44 green
+ FCB 30
+ FCB 0   black
+*flowers
+ FCB 13
  FCB $66 blue
+ FCB 30
+ FCB 0   black
+*dots
+ FCB 30
+ FCB $22 purple
+ FCB 0
+ FCB 0
+*craks
+ FCB 5
+ FCB $66 blue
+ FCB 30
+ FCB 0   black
+*bams
+ FCB 30
+ FCB $33 brown
+ FCB 0
+ FCB 0
 
 * get next tile mark color
 NCOLOR
@@ -2728,55 +2653,828 @@ MTBL
  FCB $39,$39
  FCB $3A,$3A
  FCB $3B,$3B
- FCB $3C,$3C $FFA4
- FCB $3D,$3D
- FCB $3E,$3E
- FCB $3F,$3F
+ FCB $30,$3C $FFA4
+ FCB $31,$3D
+ FCB $32,$3E
+ FCB $33,$3F
 
-* change to other task
-TASK
- COM FLAG
- TST FLAG
- BEQ A@
- LDA #$70
- STA $FFA4
- LDA #$71
- STA $FFA5
- LDA #$72
- STA $FFA6
- LDA #$73
- STA $FFA7
+**** Victory Dragon
+VICTOR
+ TST COUNT
+ BNE XVIC
+ 
+ LBSR CUROFF
+ LBSR DELAY
+ LDA #4
+ LDB #5
+ LBSR CPOS
+ LEAU VTMP,PCR
+ LBSR MSG
+ LDU CURMNU
+ LBSR DMENU
+ LBSR CURON
+
+XVIC
  RTS
+
+VTMP
+ FCC "Ye olde victory Dragon"
+ FCC " goes here",0
+
+* A nice long delay
+DELAY
+ LDX #0
 A@
- LDA #$7C
- STA $FFA4
- LDA #$7D
- STA $FFA5
- LDA #$7E
- STA $FFA6
- LDA #$7F
- STA $FFA7
+ MUL
+ MUL
+ MUL
+ LEAX -1,X
+ BNE A@
+ RTS
+
+* Challenge match scoreboard
+CHBORD
+ LBSR CLS
+ LBSR BORDER
+
+ LDA #5     "Challenge match results"
+ LDB #6
+ LBSR CPOS
+ LEAU CHRES,PCR
+ LBSR MSG
+
+ LDA #7     "Player 1"
+ LDB #8
+ LBSR CPOS
+ LEAU PLAYR1,PCR
+ LBSR MSG
+
+ LDA #21    Player 1 score
+ LDB #8
+ LBSR CPOS
+ LDB SCORES
+ LBSR PRTNUM
+
+ LDA #7     "Player 2"
+ LDB #10
+ LBSR CPOS
+ LEAU PLAYR2,PCR
+ LBSR MSG
+
+ LDA #21    Player 2 score
+ LDB #10
+ LBSR CPOS
+ LDB SCORES+1
+ LBSR PRTNUM
+
+ LDA TMOUT
+ CMPA #4
+ BNE A@
+ LDA #5     "Too many turns"
+ LDB #13
+ LBSR CPOS
+ LEAU TIMOUT,PCR
+ LBSR MSG
+A@
+
+ LDA #5     "This match is ended"
+ LDB #19
+ LBSR CPOS
+ LEAU ENDED,PCR
+ LBSR MSG
+
+ LDA #5     "Press any key..."
+ LDB #21
+ LBSR CPOS
+ LEAU PRESS,PCR
+ LBSR MSG
+
+*wait for key here
+ BSR KWAIT
+ RTS
+
+CHRES
+ FCC "Challenge match results:",0
+PRESS
+ FCC "Press any key to exit",0
+TIMOUT
+ FCC "Too many turns have passed",0
+ENDED
+ FCC "This match is ended",0
+
+KWAIT
+A@
+ LBSR KCHEK  wait for no key
+ BNE A@
+B@
+ LBSR KCHEK  wait for key
+ BEQ B@
+ RTS
+
+* check for key pressed
+KCHEK
+ CLR $FF02
+ LDA $FF00
+ ANDA #$7F
+ CMPA #$7F
  RTS
 
 * Refresh game screen state
 *
+*  U -> tile table entry
+*  B = tile position 1-144
+*
 REFRES
- PSHS D,X,Y,U
+ PSHS D,X,Y
+ CMPB #144 sneaky trick for tile 144
+ BNE C@
+ LDB #141
+ LDU #140*7+TILES
+C@
+ PSHS U
+ STB TLPOS
  LBSR CUROFF
- LBSR TASK
- LBSR CLS
- LBSR DRAGON dragon
- LDU CURMNU
- LBSR DMENU  menu text
- LBSR UCOUNT tile count
- TST CTIMER
- BGE A@      if tournament,
- LBSR UTSCOR tournament score
+ CLR MTIMER
+ LBSR CLMSG
+ LBSR TASK1 alter inactive screen
+ LBSR CLSX
+
+* redraw to the right
+ LDU ,S
+ LDA 4,U right
+ BEQ N@
+* based on tile to right
+ LDB #7
+ DECA
+ MUL
+ LDU #TILES
+ LEAU D,U
+ LDU 1,U voffset
+ LEAU -RO,U
+ BRA C@
+N@
+* no tile to immediate right
+ LDU 1,U voffset
+ LEAU -RO+CO,U
+C@
+ LBSR PILE3
+
+* redraw column at active tile
+ LDU ,S
+ LDU 1,U
+ LEAU -RO,U
+ LBSR PILE3
+
+* redraw to left
+ LDU ,S
+ LDA 3,U
+ BEQ N@
+* based on tile to left
+ DECA
+ LDU #TILES
+ LDB #7
+ MUL
+ LEAU D,U
+ LDU 1,U
+ LEAU -RO,U
+ BRA C@
+* no tile to left
+N@
+ LDU 1,U
+ LEAU -RO-CO,U
+C@
+ LBSR PILE3
+
+* do tile 144 just in case
+ LBSR DO144
+
+* transfer region to active screen
+ LDX ,S
+ LDX 1,X voffset
+ LDB TLPOS
+ CMPB #12
+ BLS X@
+ LEAX -HFROW,X
+X@
+ LEAX -HFCOL,X
+ TFR X,D
+ LSRA
+ RORB
+ TFR D,X
+ LBSR FUDGE
+*now x points to UL corner of block
+*20 bytes wide, 48 rows high
+ LDA #36 assume tile 1-12 or 76-87
+ LDB TLPOS
+ CMPB #12 tile 1-12?
+ BLS Q@ yes
+* tile 13-144
+ CMPB #75
+ BLS R@ 13-75
+* tile 76-144
+ CMPB #87
+ BLO Q@
+R@
+ LDA #48 not 1-12, 76-87
+Q@
+ PSHS A
 A@
- LBSR UUTIME time remaining
- LBSR SCLOC
+ DEC ,S
+ BLT Z@
+ TFR X,Y
+ LBSR ONEROW
+C@
+ LEAX 160,X next row
+ BRA A@
+Z@
+ PULS A
+ CLRA
+ CLRB
+ LBSR TASK0 change to active screen
  LBSR CURON
+ PULS U
+
+ LBSR UCOUNT
+ TST TLIMIT
+ BEQ A@
+ LBSR UTSCOR
+ LBSR UUTIME
+A@
+ PULS D,X,Y,PC
+
+PILE3
+ PSHS U
+ BSR VPILE
+ LEAU RO,U
+ BSR VPILE
+ LEAU RO,U
+ BSR VPILE
+ PULS U
+ RTS
+
+* draw pile based on tile table pointer
+*
+* U -> tile table entry
+*
+TPILE
+ PSHS D,X,Y,U
+ BRA F@
+*
+* draw pile based on voffset
+*
+* U = voffset
+*
+VPILE
+ PSHS D,X,Y,U
+ TFR U,X
+* look for base tile
+ LDU #TILES
+ LDA #87
+A@
+ CMPX 1,U
+ BEQ F@
+ LEAU 7,U
+ DECA
+ BNE A@
+ PULS D,X,Y,U,PC no such base
+* found base tile
+* U points to it
+F@
+ LDX 1,U voffset of base tile
+ CLR FACE id of top tile
+* draw base and upper tiles
+L@
+ TST ,U tile exists?
+ BLE N@ no
+ LDB ,U exists
+ STB FACE remember tile id
+ STX FACE+1 and voffset
+ STU FACE+3 and tile table pointer
+ PSHS U
+ LBSR EDGE do the edge
+ PULS U
+ LDA 5,U tile above it
+ BEQ N@ isn't one
+ CMPA #144 tile 144?
+ BEQ N@ forget it
+ DECA
+ LDB #7
+ MUL
+ LDU #TILES
+ LEAU D,U link to tile above
+ LEAX -2*320+2,X voffset to next level
+ BRA L@
+* found the top of the pile
+N@
+ LDB FACE need to draw face?
+ BEQ Z@ no
+ LDX FACE+1 voffset
+ LDU FACE+3 tile table pointer
+ CMPU STILE1
+ BEQ H@
+ CMPU STILE2
+ BNE W@
+H@
+ LEAU BLANKH,PCR highlight face tile
+ BRA T@
+W@
+ LEAU BLANK,PCR de-highlighted tile
+T@
+ LBSR TILE draw blank tile
+ LDX FACE+1
+ LDU FACE+3
+ LBSR SHADOW
+ LDX FACE+1
+ LDB FACE
+ LBSR MKTILE mark tile
+Z@
  PULS D,X,Y,U,PC
+
+ONEROW
+ LDA TLPOS
+ CMPA #31
+ BNE A@
+ LEAY 4,Y
+ BRA B@
+A@
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+B@
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+ LDA TLPOS
+ CMPA #45
+ BEQ Z@
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+ LDU ,Y get from inactive
+ LBSR TASK0 change to active
+ STU ,Y++ put on active
+ LBSR TASK1 change to inactive 
+Z@
+ RTS
+
+* add 3D yellow edge highlighting
+* at left and bottom of tile
+*
+* X = pixel offset
+* B = tile id
+*
+EDGE
+ PSHS B,X
+ TFR X,D
+ ANDB #1
+ BEQ EVEDGE
+
+*odd byte boundary
+ TFR X,D
+ LSRA
+ RORB
+ TFR D,X
+ LBSR FUDGE
+*detail at upper left corner
+ LEAX -1,X
+ LEAX 160,X
+ LDA #$E1
+ STA 1,X
+ LEAX 160,X
+ LDA ,X
+ ANDA #$F0
+ ORA #$0E
+ STA ,X
+ LDA #$11
+ STA 1,X
+ LEAX 160,X
+*vertical highlight
+ LDA #23
+ PSHS A
+L@
+ DEC ,S
+ BLT Z@
+ LDA 1,X
+ ANDA #$0F
+ ORA #$10
+ STA 1,X
+ LDA ,X
+ ANDA #$F0
+ ORA #$01
+ STA ,X
+ LEAX 160,X
+ BRA L@
+Z@
+ PULS A
+
+*horizontal highlight
+ LEAX -2*160,X
+ LEAX 1,X
+ LDA #10
+ LDB #$11
+A@
+ DECA
+ BLT Z@
+ STB 160,X
+ STB ,X+
+ BRA A@
+Z@
+ 
+*detail at lower right corner
+ LDA #$1E
+ STA ,X
+ LEAX 160,X
+ LDA ,X
+ ANDA #$0F
+ ORA #$E0
+ STA ,X
+ BRA XEDGE
+
+*even byte boundary
+EVEDGE
+ TFR X,D
+ LSRA
+ RORB
+ TFR D,X
+ LBSR FUDGE
+ LDA #$11 yellow
+*detail at upper left corner
+ LEAX -1,X
+ LEAX 160,X
+ LDA ,X
+ ANDA #$F0
+ ORA #$0E
+ STA ,X
+ LEAX 160,X
+ LDA #$E1
+ STA ,X
+*vertical highlight
+ LEAX 160,X
+ LDA #$11
+ LDB #23
+L@
+ DECB
+ BLT Z@
+ STA ,X
+ LEAX 160,X
+ BRA L@
+Z@
+
+*horizontal highlight
+ LEAX -2*160,X
+ LDA #$11
+ LDB #10
+L@
+ DECB
+ BLT Z@
+ STA 160,X
+ STA ,X+
+ BRA L@
+Z@
+
+*detail at lower right corner
+ LDA #$1E
+ STA ,X
+ LEAX 160,X
+ LDA ,X
+ ANDA #$0F
+ ORA #$E0
+ STA ,X
+
+XEDGE
+ PULS B,X,PC
+
+CLTILE
+ CLR STILE1
+ CLR STILE1+1
+ CLR STILE1+2
+ CLR STILE2
+ CLR STILE2+1
+ CLR STILE2+2
+ RTS
+
+DO144
+ PSHS D,X,Y,U
+ LDU #TILES
+ LEAU 143*7,U
+ LDB ,U
+ BLE XDO144
+ PSHS U
+
+ LDX 1,U
+ LEAX -2*320+2,X
+ LEAX -2*320+2,X
+ LEAX -2*320+2,X
+ LEAX -2*320+2,X
+ PSHS X
+ LBSR EDGE
+ LDU 2,S
+ LBSR SHADOW
+
+ LDU 2,S
+ CMPU STILE1
+ BEQ H@
+ CMPU STILE2
+ BEQ H@
+ LEAU BLANK,PCR
+ BRA C@
+H@
+ LEAU BLANKH,PCR
+C@
+ LBSR TILE
+
+ PULS X
+ LDU ,S
+ LDB ,U
+ LBSR MKTILE
+
+ PULS U
+XDO144
+ PULS D,X,Y,U,PC
+
+*check to see if tiles match
+*
+* U -> tile table entry
+* Y -> other tile table entry
+*
+MATCH
+ LDA ,U
+ CMPA ,Y
+ BEQ Y@
+*check seasons/flowers match exception
+ ANDA #$F0
+ CMPA #$30
+ BEQ SEACK
+ CMPA #$40
+ BNE N@
+*check flower
+ LDA ,Y
+ ANDA #$F0
+ CMPA #$40 other is flower?
+ BEQ Y@
+ BRA N@
+*check season
+SEACK
+ LDA ,Y
+ ANDA #$F0
+ CMPA #$30 other is season?
+ BNE N@
+*tiles match
+Y@
+ CLRA
+ TSTA
+ RTS
+N@
+ LDA #1
+ TSTA
+ RTS
+
+VSYNC
+ TST $FF02
+A@
+ TST $FF03
+ BGE A@
+ RTS
+
+* Draw shadow!!
+*
+* X = pixel offset
+* U -> tile table entry
+*
+SHADOW
+ PSHS X
+ PSHS U
+ LDA 4,U tile to right
+ BEQ YSHAD never existed?
+ DECA
+ LDU #TILES
+ LDB #7
+ MUL
+ LEAU D,U
+ LDA ,U
+ BGT XSHAD exists?
+
+* need shadow
+YSHAD
+ LDU ,S
+ LDD 2,S
+ LSRA
+ RORB
+ TFR D,X
+ LBSR FUDGE
+ LDD 2,S
+ ANDB #1
+ BEQ EVSHAD
+
+*odd byte shadow
+ LEAX 11,X
+ BSR SHADLN
+ LDA #22
+ PSHS A
+A@
+ DEC ,S
+ BLT B@
+ LEAX 160,X
+ BSR SHADLN
+ BSR SHADRN
+ BRA A@
+B@
+ PULS B
+ LEAX 160,X
+ LBSR SHADLN
+ BRA XSHAD
+
+*even byte shadow
+EVSHAD
+ LEAX 10,X
+ BSR SHADRN
+ LDA #22
+ PSHS A
+A@
+ DEC ,S
+ BLT B@
+ LEAX 160,X
+ BSR SHADRN
+ LEAX 1,X
+ BSR SHADLN
+ LEAX -1,X
+ BRA A@
+B@
+ PULS B
+ LEAX 160,X
+ BSR SHADRN
+ BRA XSHAD
+ 
+XSHAD
+ PULS U
+ PULS X
+ RTS
+
+*shadow left nibble
+*
+* X -> byte
+*
+SHADLN
+ PSHS U
+ LDB ,X
+ TFR B,A
+ ANDA #$0F 
+ ANDB #$F0
+ LSRB
+ LSRB
+ LSRB
+ LSRB
+ LEAU DARKER,PCR
+ LDB B,U
+ LSLB
+ LSLB
+ LSLB
+ LSLB
+ PSHS A
+ ORB ,S+
+ STB ,X
+ PULS U,PC
+
+*shadow right nibble
+*
+* X -> byte
+*
+SHADRN
+ PSHS U
+ LDB ,X
+ TFR B,A
+ ANDA #$F0
+ ANDB #$0F
+ LEAU DARKER,PCR
+ LDB B,U
+ PSHS A
+ ORB ,S+
+ STB ,X
+ PULS U,PC
+
+DARKER
+ FCB $0 0:black
+ FCB $E 1:yellow
+ FCB $0 2:dk purp
+ FCB $3 3:pump orange
+ FCB $0 4:dk green
+ FCB $3 5:dk red
+ FCB $7 6:blue
+ FCB $0 7:dk blue
+ FCB $3 8:lt orange
+ FCB $9 9:background
+ FCB $A A:unused
+ FCB $0 B:grey
+ FCB $E C:lt yel
+ FCB $D D:flash
+ FCB $0 E:grey
+ FCB $E F:white
+
+PING
+ BSR  SNDON GET SOUND FROM 6 BIT DAC
+ PSHS CC    SAVE IRQ FLAGS
+ ORCC #$50  TURN OFF IRQS
+ LDA #230   HOW LONG TO DO SOUND
+A@
+ BSR  B@    DO A TIME DELAY
+*
+ TFR  A,B   GET TIME COUNT
+ ANDB #$F7  USE ONLY THE TOP 5 BITS
+ ORB  #2    SET PRINTER BIT HIGH
+ STB  $FF20 SEND IT OUT THE DAC PORT
+*
+ BSR  B@    DO A TIME DELAY
+ LDB  #2    CLEAR ALL BITS BUT PRINTER
+ STB  $FF20 ON DAC PORT
+ DECA       MAKE BELL SOUND SMALLER
+ DECA       BY 2
+ CMPA #18   IS BELL DONE?
+ BHS  A@    NO, THEN LOOP
+ PULS CC    TURN ON IRQS
+*
+B@
+ LDB #180   TIME DELAY USED BY PING
+C@
+ DECB
+ BNE C@
+ RTS
+
+* MAKE A CLICK SOUND
+CLIK
+ LDA $FF20
+ ANDA #3
+ STA $FF20
+ BSR SNDON   TURN SOUND ON TO DAC
+ LDA  #10     START TIME DELAY SHORT
+A@
+ TFR  A,B     DO A DELAY (USE COUNT)
+B@
+ DECB         GET LONGER EACH TIME
+ BNE  B@
+ LDB  $FF20   GET DAC PORT
+ EORB #$F0    FLIP TOP 4 BITS
+ STB  $FF20   SAVE SET PORT
+ INCA         MAKE DELAY LONGER
+ CMPA #76     ALL DONE?
+ BLO  A@      NO, LOOP BACK
+
+SNDOFF
+ LDA  $FF23  TURN OFF DAC SOUND
+ ANDA #$F7   BY RESETTING THE BIT
+ STA  $FF23
+ CLRB        MAKE RETURN ZERO
+ RTS         AND RETURN
+
+SNDON
+ LDA  $FF23  TURN ON THE SOUND BY
+ ORA  #8     SETTING THE SOUND ON BIT
+ STA  $FF23
+ LDA  $FF01  GET LSB OF JOY/AUDIO
+ ANDA #$FF-8 PORT AND RESET IT
+ STA  $FF01  AND PUT IT BACK
+ LDA  $FF03  GET MSB OF JOY/AUDIO
+ ANDA #$FF-8 PORT AND RESET IT TOO
+ STA  $FF03  AND PUT IT BACK
+ RTS         NOW EXIT
+
+TASK0
+ CLRA
+ STA FF91
+ STA $FF91
+ RTS
+
+TASK1
+ LDA #1
+ STA FF91
+ STA $FF91
+ RTS
 
  INCL TABLE
  INCL DRAGONS
