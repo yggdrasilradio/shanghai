@@ -1,48 +1,47 @@
 * Title page menu
 *
 TPMENU
- FCB 8,21   column, row
+ FCB 1,10
+ FDB Z@-*
+ FDB MZAP-*
+RGBSEL
+ FCB 20,1   column, row
  FDB A@-*
- FCB 3
  FDB MRGB-*
- FCB 20,21
+CMPSEL
+ FCB 27,1
  FDB B@-*
- FCB 9
  FDB MCMP-*
- FDB $FFFF
+ FCB $FF
 A@
- FCC "RGB",0
+ FCC "@ RGB",0
 B@
- FCC "Composite",0
+ FCC "@ Composite",0
+Z@
+ FCC " ",0
 
 * Main menu
 *
 MNMENU
  FCB 12,8 column, row
  FDB A@-*
- FCB 14
  FDB MM1-*
  FCB 12,10
  FDB B@-*
- FCB 11
- FDB MM2-*
+ FDB MAIN2-*
  FCB 12,12
  FDB C@-*
- FCB 15
  FDB MM3-*
  FCB 12,14
  FDB D@-*
- FCB 15
  FDB MM4-*
  FCB 12,16
  FDB E@-*
- FCB 15
  FDB MM5-*
  FCB 12,18
  FDB F@-*
- FCB 14
- FDB MM6-*
- FDB $FFFF
+ FDB MAIN6-*
+ FCB $FF
 A@
  FCC "Play Solitaire",0
 B@
@@ -60,35 +59,30 @@ F@
 *
 GMMENU
  FCB 4,0 column, row
- FDB A@-* "Menu"
- FCB 4
+ FDB QMENU-* "Menu"
  FDB GM1-*
  FCB 10,0
- FDB B@-* "Undo"
- FCB 4
+ FDB QUNDO-* "Undo"
  FDB GM2-*
  FCB 16,0
- FDB C@-* "Find"
- FCB 4
+ FDB QFIND-* "Find"
  FDB GM3-*
  FCB 22,0
- FDB D@-* "Cancel"
- FCB 6
+ FDB QCANCE-* "Cancel"
  FDB GM4-*
  FCB 30,0
- FDB E@-* "Peek"
- FCB 4
+ FDB QPEEK-* "Peek"
  FDB GM5-*
- FDB $FFFF
-A@
+ FCB $FF
+QMENU
  FCC "Menu",0
-B@
+QUNDO
  FCC "Undo",0
-C@
+QFIND
  FCC "Find",0
-D@
+QCANCE
  FCC "Cancel",0
-E@
+QPEEK
  FCC "Peek",0
 
 * Dragon menu
@@ -96,41 +90,32 @@ E@
 DGMENU
  FCB 12,5 pairs to kong
  FDB A@-*
- FCB 13
  FDB DM1-*
  FCB 12,7 fours galore
  FDB B@-*
- FCB 12
  FDB DM2-*
  FCB 12,9 four winds
  FDB C@-*
- FCB 10
  FDB DM3-*
  FCB 12,11 bam bam
  FDB D@-*
- FCB 7
  FDB DM4-*
  FCB 12,13 crak king
  FDB E@-*
- FCB 9
  FDB DM5-*
  FCB 12,15 dots across
  FDB F@-*
- FCB 11
  FDB DM6-*
  FCB 12,17 dragon rider
  FDB G@-*
- FCB 12
  FDB DM7-*
  FCB 12,19 dragon's song
  FDB H@-*
- FCB 13
  FDB DM8-*
  FCB 12,21 return to menu
- FDB I@-*
- FCB 14
+ FDB QRETUR-*
  FDB DM9-*
- FDB $FFFF
+ FCB $FF
 A@
  FCC "Pairs to Kong",0
 B@
@@ -147,24 +132,22 @@ G@
  FCC "Dragon Rider",0
 H@
  FCC "Dragon's Song",0
-I@
+QRETUR
  FCC "Return to Menu",0
 
 * Peek menu
 *
 PKMENU
- FCB 20,12   column, row
- FDB A@-*
- FCB 3
+ FCB 17,12   column, row
+ FDB QYES-*
  FDB PM1-*
- FCB 20,14
- FDB B@-*
- FCB 2
+ FCB 17,14
+ FDB QNO-*
  FDB PM2-*
- FDB $FFFF
-A@
+ FCB $FF
+QYES
  FCC "Yes",0
-B@
+QNO
  FCC "No",0
 
 * Challenge menu
@@ -172,25 +155,20 @@ B@
 CHMENU
  FCB 11,9 column, row
  FDB A@-*
- FCB 10
  FDB CH1-*
  FCB 11,11
  FDB B@-*
- FCB 10
  FDB CH2-*
  FCB 11,13
  FDB C@-*
- FCB 10
  FDB CH3-*
  FCB 11,15
  FDB D@-*
- FCB 10
  FDB CH4-*
  FCB 11,17
- FDB E@-*
- FCB 14
+ FDB QRETUR-*
  FDB CH5-*
- FDB $FFFF
+ FCB $FF
 A@
  FCC "10 seconds",0
 B@
@@ -199,105 +177,73 @@ C@
  FCC "30 seconds",0
 D@
  FCC "60 seconds",0
-E@
- FCC "Return to Menu",0
 
 * Challenge match game screen menu
 *
 CGMENU
  FCB 4,0 column, row
- FDB A@-* "Quit"
- FCB 4
+ FDB QQUIT-* "Quit"
  FDB CG1-*
  FCB 24,0
- FDB B@-* "Cancel"
- FCB 6
+ FDB QCANCE-* "Cancel"
  FDB CG2-*
- FDB $FFFF
-A@
+ FCB $FF
+QQUIT
  FCC "Quit",0
-B@
- FCC "Cancel",0
 
 * Tournament menu
 *
 TOMENU
  FCB 6,8 column, row
  FDB A@-*
- FCB 15
  FDB TO1-*
  FCB 6,10
  FDB B@-*
- FCB 15
  FDB TO2-*
  FCB 6,12
- FDB C@-*
- FCB 15
+ FDB QRETUR-*
  FDB TO3-*
- FDB $FFFF
+ FCB $FF
 A@
  FCC "Begin 5 minute tournament",0
 B@
  FCC "Begin 10 minute tournament",0
-C@
- FCC "Return to Menu",0
 
 * Tournament game screen menu
 *
 TGMENU
  FCB 4,0 column, row
- FDB A@-* "Quit"
- FCB 4
+ FDB QQUIT-* "Quit"
  FDB TG1-*
  FCB 10,0
- FDB B@-* "Undo"
- FCB 4
+ FDB QUNDO-* "Undo"
  FDB TG2-*
  FCB 22,0
- FDB C@-* "Cancel"
- FCB 6
+ FDB QCANCE-* "Cancel"
  FDB TG3-*
- FDB $FFFF
-A@
- FCC "Quit",0
-B@
- FCC "Undo",0
-C@
- FCC "Cancel",0
+ FCB $FF
 
 * Tournament scoreboard menu
 *
 SCMENU
- FCB 28,15   column, row
- FDB A@-*
- FCB 3
+ FCB 28,22   column, row
+ FDB QYES-*
  FDB SC1-*
- FCB 33,15
- FDB B@-*
- FCB 2
+ FCB 33,22
+ FDB QNO-*
  FDB SC2-*
- FDB $FFFF
-A@
- FCC "Yes",0
-B@
- FCC "No",0
+ FCB $FF
 
 * Peek game screen menu
 *
 PGMENU
  FCB 4,0 column, row
- FDB A@-* "Quit"
- FCB 4
+ FDB QQUIT-* "Quit"
  FDB PG1-*
  FCB 10,0
- FDB B@-* "Undo"
- FCB 4
+ FDB QUNDO-* "Undo"
  FDB PG2-*
- FDB $FFFF
-A@
- FCC "Quit",0
-B@
- FCC "Undo",0
+ FCB $FF
 
 * Draw menu
 *
@@ -318,12 +264,11 @@ DMENU0
  LEAU D,U
  LBSR MSG    draw the item
  PULS U
- LEAU 5,U
+ LEAU 4,U
  BRA DMENU0
 
 XDMENU
- PULS U
- RTS
+ PULS U,PC
 
 *convert text col,row to voffset
 *
@@ -342,6 +287,31 @@ CPOSL
  BRA CPOSL
 
 XCPOSL
+ LEAS 1,S
+
+ PULS A   get column back
+ LDB #4
+ MUL
+ LEAX D,X
+ RTS
+
+*convert text col,row to voffset
+*
+* A is col, B is row
+* returns with voffset in X
+*
+CPOS9
+ PSHS A    save column
+ LDX #SCREEN
+
+ PSHS B   row
+C9OSL
+ DEC ,S
+ BLT X9POSL
+ LEAX 160*9,X
+ BRA C9OSL
+
+X9POSL
  LEAS 1,S
 
  PULS A   get column back
@@ -377,7 +347,17 @@ UMENUL
  LDB #8 convert column
  MUL
  STD ITEMX1
- LDA 4,U len of message
+
+*derive len of message
+ LEAX 2,U
+ LDD 2,U
+ LEAX D,X
+ LDA #$FF
+A@
+ INCA
+ TST ,X+
+ BNE A@
+
  LDB #8
  MUL
  ADDD ITEMX1
@@ -386,9 +366,9 @@ UMENUL
 * is the cursor within the range?
  LDD TEMPX
  CMPD ITEMX1
- BLO UMENUX
+ LBLO UMENUX
  CMPD ITEMX2
- BHI UMENUX
+ LBHI UMENUX
  LDD TEMPY
  CMPD ITEMY1
  BLO UMENUX
@@ -427,13 +407,26 @@ UMENU0
  INC HFLAG
  LBSR CUROFF
  LBSR MSG highlight
- LBSR CURON
- RTS
+ LBRA CURON
 
 * didn't point to anything previously
 * so just highlight this item
 UMENU1
  STU MNUPTR remember this item
+* kludge to change color set
+ LEAU RGBSEL,PCR
+ CMPU MNUPTR
+ BNE A@
+ LEAU RGBSET,PCR
+ LBSR CLRSET
+A@
+ LEAU CMPSEL,PCR
+ CMPU MNUPTR
+ BNE B@
+ LEAU CMPSET,PCR
+ LBSR CLRSET
+B@
+ LDU MNUPTR
  LDD ,U++
  LBSR CPOS
  LDD ,U
@@ -441,12 +434,11 @@ UMENU1
  INC HFLAG
  LBSR CUROFF
  LBSR MSG highlight
- LBSR CURON
- RTS
+ LBRA CURON
 
 UMENUX
 * try next menu item
- LEAU 7,U
+ LEAU 6,U
  LBRA UMENUL
 
 * not pointing to anything
@@ -463,7 +455,8 @@ XUMENU
  LBSR CUROFF
  LBSR MSG de-highlight
  LBSR CURON
- LDD #0
+ CLRA
+ CLRB
  STD MNUPTR forget old item
 
 XXUMNU
@@ -474,11 +467,10 @@ XMENU
  LDD MNUPTR
  BEQ XMENUX
  TFR D,U
- LEAU 5,U
+ LEAU 4,U
  LDD ,U
- LEAU D,U
  LEAS 2,S
- JMP ,U
+ JMP D,U
 
 XMENUX
  RTS
@@ -488,7 +480,7 @@ XMENUX
 BORDER
  INC BORDF
  LDX #SCREEN+4*160+1
- LDB #$44
+ LDB #$00
 * upper left corner detail
  STB -160-1,X
  STB -2*160-1,X
@@ -505,7 +497,7 @@ A@
 B@
  PULS A
 * upper right corner detail
- LDB #$44
+ LDB #$00
  STB -160,X
  STB -2*160,X
 * bottom
@@ -522,7 +514,7 @@ C@
 D@
  PULS A
 * lower right corner detail
- LDB #$44
+ LDB #$00
  STB 8*160,X
  STB 9*160,X
 * left
@@ -540,7 +532,7 @@ E@
 F@
  PULS A
 * lower left corner detail
- LDB #$44
+ LDB #$00
  STB -1,X
 *right
  LDX #SCREEN+4*160+1
@@ -556,14 +548,12 @@ G@
  LEAX 8*160-4,X
  BRA G@
 H@
- PULS A
  CLR BORDF
- RTS
+ PULS A,PC
 
 VLINES
  PSHS X
- LDA #$44
- LDB #8
+ LDD #$0008
 A@
  STA -1,X
  STA 4,X
@@ -573,7 +563,7 @@ A@
  PULS X,PC
 
 HLINES
- LDD #$4444
+ LDD #$0000
  STD -2*160,X
  STD -2*160+2,X
  STD -160,X
@@ -591,6 +581,7 @@ HLINES
 TMENU
  STU CURMNU
  LBSR BORDER
+TMENUS
  LDU CURMNU
  LBSR DMENU
 A@

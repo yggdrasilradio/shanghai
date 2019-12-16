@@ -15,11 +15,15 @@ L@
  BNE L@
  LDD #NAME
  CLR NAMCNT
- LDA #2
+ LDA #3
  LDB #19
  LBSR CPOS
  LEAU PROMPT,PCR
  LBSR MSG
+ LDA #8
+ LDB #20
+ LBSR CPOS
+ LEAX 2*160,X
  LDB #'@
  INC HFLAG
  LBSR PUT
@@ -27,6 +31,12 @@ L@
  LEAX -4,X
 A@
  LBSR INKEY
+ CMPB #'#   don't allow weave
+ BEQ A@
+ CMPB #'@   don't allow cursor
+ BEQ A@
+ CMPB #'*   don't allow copyright
+ BEQ A@
  CMPB #$0D
  BEQ Z@
  CMPB #8
@@ -64,10 +74,17 @@ B@
  LEAX -4,X
  BRA A@
 Z@
+ TST NAMCNT
+ BNE EGN
+ LDB #'-
+ STB NAME
+ INC NAMCNT
+EGN
  RTS
 
 PROMPT
- FCC "NAME: ",0
+ FCC "Type your name, then"
+ FCC " press enter:",0
 
 * POLL KEYBOARD, WAIT FOR KEY
 * B = ASCII CHARACTER
@@ -127,8 +144,7 @@ TSMSG
 *
 PTBORD
  LBSR CLS
- LDA #2 row
- LDB #2 column
+ LDD #$0903
  LBSR CPOS
  LEAU SCHD1,PCR "Tournament Scoreboard"
  LBSR MSG
@@ -145,15 +161,17 @@ A@
  LDA #4
  LDB #9
  SUBB ,S
- ADDB #3
- LBSR CPOS
+ ADDB #6
+ ADDA #2
+ LBSR CPOS9
  PSHS U
  LBSR MSG    name
  LDA #4+26
  LDB #9
  SUBB 2,S
- ADDB #3
- LBSR CPOS
+ ADDB #6
+ ADDA #2
+ LBSR CPOS9
  LDU ,S
  LDB 20,U
  LBSR PRTNUM score
@@ -165,16 +183,18 @@ B@
  LDA #4
  LDB #9
  SUBB ,S
- ADDB #3
- LBSR CPOS
+ ADDB #6
+ ADDA #2
+ LBSR CPOS9
  PSHS U
  LEAU DASH,PCR
  LBSR MSG
  LDA #4+26
  LDB #9
  SUBB 2,S
- ADDB #3
- LBSR CPOS
+ ADDB #6
+ ADDA #2
+ LBSR CPOS9
  LEAU DASH,PCR
  LBSR MSG
  PULS U
@@ -183,8 +203,8 @@ B@
 Z@
  PULS A
 * do "continue tournament" menu
- LDA #2
- LDB #15
+ LDA #4
+ LDB #22
  LBSR CPOS
  LEAU SCHD2,PCR
  LBSR MSG "Continue tournament?"
@@ -193,7 +213,11 @@ Z@
 
 *yes
 SC1
+ LBSR CUROFF
+ LDU CURMNU
+ LBSR DMENU
  LBSR GETNAM
+ LBSR CURON
  LDA #1
  TSTA
  RTS
@@ -271,6 +295,8 @@ Z@
 PUTNAM
  PSHS U
  LDX #NAME
+ LDA NAMCNT
+ CLR A,X
 A@
  LDA ,X+
  STA ,U+
