@@ -1,3 +1,13 @@
+
+* Font
+*
+* Data for oriental font
+*
+* Font designed by Doug Barnett
+*
+* (c) copyright 1987 by Activision
+*
+
 FONT
  FCB 0,0,0,0 space
  FCB 0,0,0,0
@@ -26,8 +36,8 @@ FONT
  FCB $18 ...**...
  FCB $00 ........
 
- FCB $88 *...*...
- FCB $1D ...***.*
+ FCB $88 *...*... weave pattern
+ FCB $1D ...***.* for menu border
  FCB $3E ..*****.
  FCB $5C .*.***..
  FCB $88 *...*...

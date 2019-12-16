@@ -1,6 +1,23 @@
-* Shanghai
-* (c) Copyright 1987 Activision
 *
+* Shanghai - Color Computer 3 version
+*
+* (c) copyright 1987 Activision
+*
+* Programmed by Rick Adams
+*
+* Shanghai designed by Brodie Lockard
+*
+* Project management:
+*    Sherry Whiteley (Activision)
+*    Gene Schenberg (Tandy)
+*
+* Graphics by Doug Barnett
+*
+* Testing:
+*    Keith Orr
+*    Alex Edelstein
+*
+
 SCREEN EQU $8000
 
 * TILE TABLE FORMAT:
@@ -83,7 +100,7 @@ CACHE  RMB 6*10
  ORG $3000
 BEGIN
  LBRA START
-*CMP Color set
+*Composite Color set
 CMPSET
  FCB 0     black            0
  FCB 37    yellow           1
@@ -95,9 +112,9 @@ CMPSET
  FCB 11    dark blue        7
  FCB 38    light orange     8
  FCB 11    background dkblu 9
- FCB 16    tile edge dk greyA amazing!
+ FCB 16    tile edge dk greyA
  FCB 16    tile grout dkgreyB
- FCB 63    tile border whiteC amazing!
+ FCB 63    tile border whiteC
  FCB 63    blinking hilite  D
  FCB 32    grey             E
  FCB 63    tile white       F
@@ -114,31 +131,18 @@ RGBSET
  FCB 12    dark blue        7
  FCB 38    light orange     8
  FCB 12    background dkblu 9
- FCB 07    tile edge dkgrey A amazing!
- FCB 07    tile grout dkgreyB amazing!
- FCB 63    tile bord white  C amazing!
+ FCB 07    tile edge dkgrey A
+ FCB 07    tile grout dkgreyB
+ FCB 63    tile bord white  C
  FCB 63    blinking hilite  D
  FCB 56    grey             E
  FCB 63    tile white       F
 
-*the PROPER RGB Color set!
+*Previous RGB color set
 ZAPSET
- FCB 0     black            0
- FCB 55    yellow           1
- FCB 40    dark purple      2
- FCB 34    pumpkin orange   3
- FCB 21    dark green       4
- FCB 36    dark red         5
- FCB 13    blue             6
- FCB 12    dark blue        7
- FCB 38    light orange     8
- FCB 12    background dkblu 9
- FCB 55    tile edge dk yel A better!
- FCB 56    tile grout grey  B better!
- FCB 62    tile bord lt yel C better!
- FCB 63    blinking hilite  D
- FCB 56    grey             E
- FCB 63    tile white       F
+ FCB 0,55,40,34,21,36
+ FCB 13,12,38,12,55,56
+ FCB 62,63,56,63
 
 START
  ORCC #$50
@@ -269,6 +273,9 @@ GENE1
  FCC "Designed by",0
 GENE2
  FCC "Brodie Lockard",0
+
+* Embedded text message for my friend
+* Don Hutchison
 
  FCC "***  HI DON!  "
  FCC "  GOOD TO SEE YOU AGAIN!  ***"
@@ -2716,6 +2723,11 @@ NCOLOR
 XNCOLR
  PULS D,X,Y,U,PC
 
+* "Chime" sound for tournament, etc.
+* Sounds just like the chime in Coco
+* Max and Stellar Lifeline, but its
+* A Rick Adams original!
+
 CHIME
  PSHS D
  LDA $FF23
@@ -2761,12 +2773,16 @@ XCHI0
  STA $FF23
  PULS D,PC
 
+* Sine table for chime
+
 SINTBL
  FCB $20,$26,$2C,$31,$36,$3A,$3D,$3F
  FCB $3F,$3F,$3D,$3A,$36,$31,$2C,$26
  FCB $20,$19,$13,$0E,$09,$05,$02,$00
  FCB $00,$00,$02,$05,$09,$0E,$13,$19
 
+* Initialize memory management unit
+*
 MINIT
  LDX #$FFA0
  LDY #$FFA8
@@ -2784,11 +2800,11 @@ XMINI
  PULS A,PC
 
 MTBL
- FCB $38,$38 $FFA0 $FFA8
+ FCB $38,$38
  FCB $39,$39
  FCB $3A,$3A
  FCB $3B,$3B
- FCB $30,$3C $FFA4
+ FCB $30,$3C
  FCB $31,$3D
  FCB $32,$3E
  FCB $33,$3F
@@ -3644,6 +3660,11 @@ DARKER
  FCB $0 E:grey
  FCB $E F:white
 
+* Error "ping" sound
+*
+* Sound routine donated by
+* Don Hutchison
+
 PING
  BSR  SNDON GET SOUND FROM 6 BIT DAC
  PSHS CC    SAVE IRQ FLAGS
@@ -3673,7 +3694,11 @@ C@
  BNE C@
  RTS
 
-* MAKE A CLICK SOUND
+* Tile select "click" sound
+*
+* Modified from a routine donated by
+* Don Hutchison
+*
 CLIK
  PSHS D,X
  LEAX MAIN,PCR
@@ -3776,13 +3801,13 @@ DTBL
  FCB 147,148,149,150,152,153,154,160
  FCB 161,164,168,169,170
 
- INCL TABLE
- INCL DRAGONS
- INCL FONT
- INCL TILES
- INCL MENUS
- INCL TOURNEY
- INCL LETTRING
+ INCL TABLE:1
+ INCL DRAGONS:1
+ INCL FONT:1
+ INCL TILES:1
+ INCL MENUS:1
+ INCL TOURNEY:1
+ INCL LETTRING:1
 
 *RGB dragon colorset
 DCOLOR

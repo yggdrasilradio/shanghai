@@ -1,3 +1,13 @@
+
+* Dragons
+*
+* Data for pre-defined dragons
+*
+* Programmed by Rick Adams
+*
+* (c) copyright 1987 by Activision
+*
+
 DRA EQU $10
 WIN EQU $20
 SEA EQU $30

@@ -1,4 +1,13 @@
 
+* Table
+*
+* Internal tile relationship tables
+*
+* Programmed by Rick Adams
+*
+* (c) copyright 1987 by Activision
+*
+
 RO EQU 320*24
 CO EQU 21
 HFROW EQU 320*12
@@ -332,4 +341,3 @@ BASES
  FCB 1,32,46,76
  FCB 31
  FCB 0
-

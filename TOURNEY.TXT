@@ -1,4 +1,14 @@
 
+* Tourney
+*
+* Tournament routines
+*
+* Programmed by Rick Adams
+*
+* (c) Copyright 1987 by Activision
+*
+
+
 *get name from keyboard
 * X -> screen position
 GETNAM
@@ -311,4 +321,3 @@ A@
  LDA TICKS
  STA 23,U
  RTS
-

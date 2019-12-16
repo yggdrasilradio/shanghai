@@ -1,3 +1,21 @@
+
+* Lettring
+*
+* Programs and compressed data for
+* "Shanghai" title lettering on the
+* title page
+*
+* Lettering designed by Doug Barnett
+*
+* Programming by Rick Adams
+*
+* Alterations to lettering by Rick
+* Adams using Colormax 3
+*
+* Data compression by Rick Adams
+*
+* (c) copyright 1987 by Activision
+
 LETRNG
  LEAU LETDAT,PCR
  LDX #SCREEN

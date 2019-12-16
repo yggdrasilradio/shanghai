@@ -1,3 +1,14 @@
+
+* Menus
+*
+* Menu routines and associated data
+*
+* Programmed by Rick Adams
+*
+* (c) copyright 1987 Activision
+*
+
+
 * Title page menu
 *
 TPMENU
