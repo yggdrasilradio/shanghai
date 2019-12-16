@@ -1,0 +1,365 @@
+
+*get name from keyboard
+* X -> screen position
+GETNAM
+ LDA #1
+ LBSR BUTTON
+ BNE GETNAM   no button
+ LDA #20
+ CLRB
+ LDY #NAME
+ STY NAMPTR
+L@
+ STB ,Y+
+ DECA
+ BNE L@
+ LDD #NAME
+ CLR NAMCNT
+ LDA #2
+ LDB #19
+ LBSR CPOS
+ LEAU PROMPT,PCR
+ LBSR MSG
+ LDB #'@
+ INC HFLAG
+ LBSR PUT
+ CLR HFLAG
+ LEAX -4,X
+A@
+ LBSR INKEY
+ CMPB #$0D
+ BEQ Z@
+ CMPB #'<
+ BNE B@
+* backspace
+ TST NAMCNT
+ BEQ A@
+ DEC NAMCNT
+ LDD NAMPTR
+ SUBD #1
+ STD NAMPTR
+ LDB #'      space
+ LBSR PUT
+ LEAX -8,X   2 backspaces
+ LDB #'@ 
+ INC HFLAG
+ LBSR PUT    cursor
+ CLR HFLAG
+ LEAX -4,X   1 backspace
+ BRA A@
+* Normal character
+B@
+ LDA NAMCNT
+ CMPA #19
+ BHS A@
+ INC NAMCNT
+ LDY NAMPTR
+ STB ,Y+
+ STY NAMPTR
+ LBSR PUT
+ INC HFLAG
+ LDB #'@
+ LBSR PUT
+ CLR HFLAG
+ LEAX -4,X
+ BRA A@
+Z@
+ RTS
+
+PROMPT
+ FCC "NAME: ",0
+
+* POLL KEYBOARD, WAIT FOR KEY
+* B = ASCII CHARACTER
+*
+INKEY
+ CLR KEYON
+ INC KEYON
+ PSHS X
+INKEY0
+ CLR $FF02
+ LDA $FF00
+ ANDA #$7F
+ CMPA #$7F
+ BNE KEYHIT
+
+*NO KEY PRESSED
+ CLR KEYON
+ BRA INKEY0
+
+*KEY PRESSED
+KEYHIT
+ TST KEYON   KEY PRESSED LAST TIME?
+ BNE INKEY0  WAIT FOR NEW KEY
+
+*NEW KEY PRESSED
+ CLRB
+SCAN
+ CMPB #49
+ BHS ENSCAN
+ BSR KEYTST
+ BEQ KEYFND
+ INCB
+ BRA SCAN
+
+*NEW KEY POSITION DECODED
+KEYFND
+ INC KEYON
+ LEAX CHARS,PCR
+ LDB B,X
+ PULS X,PC
+
+*COULDN'T FIND NEW KEY
+ENSCAN
+ BRA INKEY0
+
+CHARS
+ FCC "@ABCDEFG"
+ FCC "HIJKLMNO"
+ FCC "PQRSTUVW"
+ FCC "XYZ  <  "
+ FCC "01234567"
+ FCC "89:;,-. "
+ FCB $D
+
+* TEST KEY
+* B = KEY POSITION
+*     BEQ KEYON
+*
+KEYTST
+ PSHS D,X
+ LEAX BITS,PCR
+ TFR B,A
+ LSRB
+ LSRB
+ LSRB
+ ANDA #7
+ LDA A,X
+ COMA
+ STA $FF02
+ LDA $FF00
+ ANDA B,X
+ PULS X,D
+ RTS
+
+BITS
+ FCB %00000001
+ FCB %00000010
+ FCB %00000100
+ FCB %00001000
+ FCB %00010000
+ FCB %00100000
+ FCB %01000000
+ FCB %10000000
+
+* clear scoreboard
+CLBORD
+ PSHS D,X
+ LDA #24*10+1
+ LDX #SCBORD
+ CLRB
+A@
+ DECA
+ BEQ B@
+ STB ,X+
+ BRA A@
+B@
+ PULS D,X,PC
+
+*update tournament score display
+UTSCOR
+ PSHS D,X,Y,U
+ LDA #39
+ LDB #19
+ LBSR CPOS
+ LEAX 160,X
+ LEAU TSMSG,PCR
+ LBSR MSG
+ LDA #40
+ LDB #20
+ LBSR CPOS
+ LEAX 160*2,X
+ LDB TSCORE
+ CLRA
+ LBSR PRTNUM
+ PULS D,X,Y,U,PC
+
+TSMSG
+ FCC "Score",0
+
+* Put up tournament scoreboard
+*
+PTBORD
+ LBSR CLS
+ LDA #2 row
+ LDB #2 column
+ LBSR CPOS
+ LEAU SCHD1,PCR "Tournament Scoreboard"
+ LBSR MSG
+* put up names and scores
+ LDU #SCBORD
+ LDA #10
+ PSHS A
+A@
+ DEC ,S
+ BLT Z@
+ TST ,U
+ BEQ B@
+* put up name and score
+ LDA #4
+ LDB #9
+ SUBB ,S
+ ADDB #3
+ LBSR CPOS
+ PSHS U
+ LBSR MSG    name
+ LDA #4+26
+ LDB #9
+ SUBB 2,S
+ ADDB #3
+ LBSR CPOS
+ LDU ,S
+ LDB 20,U
+ LBSR PRTNUM score
+ PULS U
+ LEAU 24,U
+ BRA A@
+* null scoreboard entry
+B@
+ LDA #4
+ LDB #9
+ SUBB ,S
+ ADDB #3
+ LBSR CPOS
+ PSHS U
+ LEAU DASH,PCR
+ LBSR MSG
+ LDA #4+26
+ LDB #9
+ SUBB 2,S
+ ADDB #3
+ LBSR CPOS
+ LEAU DASH,PCR
+ LBSR MSG
+ PULS U
+ LEAU 24,U
+ BRA A@
+Z@
+ PULS A
+* do "continue tournament" menu
+ LDA #2
+ LDB #15
+ LBSR CPOS
+ LEAU SCHD2,PCR
+ LBSR MSG "Continue tournament?"
+ LDD #0
+ STD CURSXY
+ LDX #SCREEN
+ LBSR ARROW
+ LEAU SCMENU,PCR
+ LBSR DMENU
+SCLOOP
+ LDB #1
+ LBSR CURSOR
+ LEAU SCMENU,PCR
+ LBSR UMENU
+ LDB #1
+ LBSR BUTTON
+ BEQ SCLOOP
+ LBSR XMENU
+ LBRA SCLOOP
+*yes
+SC1
+ LBSR GETNAM
+ LDA #1
+ TSTA
+ RTS
+*no
+SC2
+ CLRA
+ TSTA
+ RTS
+
+DASH
+ FCC "-",0
+SCHD1
+ FCC "Tournament Scoreboard",0
+SCHD2
+ FCC "Continue tournament?",0
+
+* Post tournament score to scoreboard
+POST
+ LDU #SCBORD-24
+ LDA #10
+ PSHS A
+A@ DEC ,S
+ BLT Z@
+ LEAU 24,U
+ LDA TSCORE
+ CMPA 20,U
+ BLO A@
+ BNE B@
+ CMPA #144
+ BNE B@
+*tie breaker
+ LDA MINS
+ CMPA 21,U
+ BLO B@
+ LDA SECS
+ CMPA 22,U
+ BLO B@
+ LDA TICKS
+ CMPA 23,U
+ BHI A@
+B@
+ LDA ,S
+ LBSR INS
+ LBSR PUTNAM
+Z@
+ PULS A,PC
+
+* insert line in scoreboard
+INS
+ PSHS U,A
+ LDX #SCBORD+8*24
+ LDY #SCBORD+9*24
+*for each line
+ PSHS A
+A@
+ DEC ,S
+ BLT Z@
+*for each character
+ LDA #24
+ PSHS X,Y
+B@
+ LDB ,X+
+ STB ,Y+
+ DECA
+ BNE B@
+ PULS X,Y
+ LEAX -24,X
+ LEAY -24,Y
+ BRA A@
+Z@
+ PULS A
+ PULS U,A,PC
+
+* Put player into scoreboard
+PUTNAM
+ PSHS U
+ LDX #NAME
+A@
+ LDA ,X+
+ STA ,U+
+ BNE A@
+ PULS U
+ LDA TSCORE
+ STA 20,U
+ LDA MINS
+ STA 21,U
+ LDA SECS
+ STA 22,U
+ LDA TICKS
+ STA 23,U
+ RTS
+
