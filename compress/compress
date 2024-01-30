@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+
+# FCB 0  *  0 background
+# FCB 0  *  1 flame CYCLES	**UNUSED**
+# FCB 36 *  2 flame CYCLES
+# FCB 54 *  3 flame CYCLES
+# FCB 52 *  4 flame CYCLES
+# FCB 38 *  5 flame CYCLES
+# FCB 32 *  6 flame CYCLES
+# FCB 32 *  7 flame		**need to cycle**
+# FCB 34 *  8 unused		**UNUSED**
+# FCB 52 *  9 eye highlight
+# FCB 36 * 10 main body
+# FCB 53 * 11 unused		**UNUSED**
+# FCB 4  * 12 body edges/feathering
+# FCB 32 * 13 unused FLASHES	******
+# FCB 32	* 14 main body shading
+# FCB 255	* 15 text 		******
+
+def FixColor(value):
+	if value == 13:
+		value = 14
+	if value == 15:
+		value = 10
+	return value
+
+def Fix(value):
+	color1 = int((value & 0xf0) / 16)
+	color2 = int(value & 0x0f)
+	value = (FixColor(color1) * 16) | FixColor(color2)
+	return value
+
+with open("victory.vef", "rb") as FILE:
+
+	# Throw away the header
+	bytedata = FILE.read(18)
+
+	# Everything else is pixel data
+	total = 0
+	for y in range(0, 200):
+
+		# read this row
+		bytedata = bytearray(FILE.read(160))
+
+		# crop on the left
+		for i in range(64):
+			bytedata[i] = 0
+
+		rowaddress = 0x8000 + ((y + 25) * 160)
+
+		# only process rows 16 through 181
+		#if y < 16 or y > 90: # OK
+		if y < 16 or y > 100: # OK
+			continue
+
+		begin = 0
+
+		# leading zeroes
+		leading = 0
+		for x in range(0, 160, 2):
+			if bytedata[x] != 0 or bytedata[x + 1] != 0:
+				begin = x
+				break
+			leading += 1
+
+		# trailing zeroes
+		trailing = 0
+		for x in range(158, 0, -2):
+			if bytedata[x] != 0 or bytedata[x + 1] != 0:
+				end = x
+				break
+			trailing += 1
+
+		# length of run in doubles
+		length = 80 - leading - trailing
+
+		# output token
+		print('* Row ' + str(y) + ' token:')
+		print(' FDB ' + hex(rowaddress + begin - 32))
+		print(' FCB ' + str(length))
+
+		print()
+		total += 3
+
+		# output row data
+		print('* Row ' + str(y) + ' data:')
+		for i in range(begin, end + 2, 2):
+			value = Fix(bytedata[i]) * 256 + Fix(bytedata[i + 1])
+			print(' FDB ' + str(value))
+			total += 2
+	
+		print()
+
+# Total memory used by tokens and data
+print('* Total ' + str(total))
