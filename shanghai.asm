@@ -96,7 +96,6 @@ HISTRY RMB 144
 SCBORD RMB 24*10 scoreboard
 NAME   RMB 20
 CACHE  RMB 6*10
-BUF    RMB 160
 
  ORG $3000
 BEGIN
@@ -1671,7 +1670,7 @@ CVECT
 * B has character in it
 PUT
  PSHS D,X,Y,U
- CMPB #'a    lower case?
+ CMPB #'a'   lower case?
  BLO PUTUC
  SUBB #'a-'A convert to upper case
 PUTUC
@@ -2905,7 +2904,6 @@ A@
 
  LBSR ROAR
  LBSR ROAR * DEBUG
- LBSR ROAR * DEBUG
 
  CLR WINSET
  LBSR CLS
@@ -3802,62 +3800,6 @@ A@
  STA $FF91
  PULS A,PC
 
-* uncompress driver
-*
-* U -> compressed data
-*
-*DRIVER
-* LDX #SCREEN+30*160+54
-*I@
-* LDA ,U+
-* CMPA #$FF
-* BEQ X@
-* PSHS A
-* TSTA
-* BGE BYTE2
-** one-byte token
-* LDB ,S
-* ANDB #$7F
-* BSR CVERT
-* STB ,X+
-* BRA Z@
-**two-byte token
-*BYTE2
-* LDB ,S
-* ANDB #$7F
-* BSR CVERT
-* LDA ,U+
-*L@
-* STB ,X+
-* DECA
-* BNE L@
-*Z@
-* PULS A
-* BRA I@
-*X@
-* RTS
-
-* convert token to value
-*
-* B is token/value
-*
-*CVERT
-* PSHS A
-* LEAY DTBL,PCR
-* CLRA
-* LDB D,Y
-* PULS A,PC
-
-*DTBL
-* FCB 0,1,2,3,4,5,6,8,9
-* FCB 10,16,17,18,22,24,25,33,34,36
-* FCB 38,48,49,50,51,54,57,64,68,69
-* FCB 70,73,74,82,85,86,89,96,99,100
-* FCB 101,102,104,105,106,116,128,132
-* FCB 133,134,136,137,138,144,145,146
-* FCB 147,148,149,150,152,153,154,160
-* FCB 161,164,168,169,170
-
  include driver.asm
  include table.asm
  include dragons.asm
@@ -3934,6 +3876,6 @@ SDATA
  include victory.asm
  FDB $FFFF
 
-ZPROG
+ZPROG * end of program can safely be up to 7DB7
 
  END START
