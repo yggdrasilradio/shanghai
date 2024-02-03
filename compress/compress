@@ -37,11 +37,11 @@ with open("victory.vef", "rb") as FILE:
 			bytedata[i] = Fix(bytedata[i])
 
 		# Beginning address of this row
-		rowaddress = 0x8000 + (y * 160) - (6 * 160)
+		rowaddress = 0x8000 + (y * 160) - (8 * 160)
 
 		# Only process rows 16 through 181
 		#if y < 16 or y > 152:
-		if y < 16 or y > 180:
+		if y < 16 or y > 181:
 			continue
 
 		begin = 0
