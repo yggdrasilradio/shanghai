@@ -44,11 +44,10 @@ with open("victory.vef", "rb") as FILE:
 		rowaddress = 0x8000 + ((y + 15) * 160)
 
 		# Only process rows 16 through 181
-		#if y < 16 or y > 104:
-		#if y < 16 or y > 120:
-		if y < 16 or y > 143:
+		if y < 16 or y > 152:
 			continue
 
+		# Don't process a strip across the middle where the congratulatory text goes
 		if y > 98 and y < 119:
 			continue
 
