@@ -2892,6 +2892,8 @@ VICTOR
  LEAU DCOLOC,PCR
 A@
  LBSR CLRSET
+ CLRA
+ STA $FF9A border
  LBSR CLS
 
  LEAU SDATA,PCR display dragon head
