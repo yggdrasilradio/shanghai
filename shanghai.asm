@@ -97,7 +97,7 @@ SCBORD RMB 24*10 scoreboard
 NAME   RMB 20
 CACHE  RMB 6*10
 
- ORG $2900
+ ORG $1700
 
 BEGIN
  LBRA START
@@ -2898,7 +2898,7 @@ A@
  LBSR DRIVER
 
  * LDD #$050E
- LDD #$050F position of message
+ LDD #$0517 position of message
  LBSR CPOS
  LEAU VTMP,PCR
  LBSR MSG
@@ -3877,6 +3877,6 @@ SDATA
  include victory.asm
  FDB $FFFF
 
-ZPROG * program can theoretically be 2BE6 to 7F00
+ZPROG
 
  END START

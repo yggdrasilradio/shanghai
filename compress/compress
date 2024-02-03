@@ -32,23 +32,16 @@ with open("victory.vef", "rb") as FILE:
 		# Read this row
 		bytedata = bytearray(FILE.read(160))
 
-		# Crop on the left
-		#for i in range(64):
-		#	bytedata[i] = 0
-
 		# Swap colors
 		for i in range(160):
 			bytedata[i] = Fix(bytedata[i])
 
 		# Beginning address of this row
-		rowaddress = 0x8000 + ((y + 15) * 160)
+		rowaddress = 0x8000 + (y * 160) - (6 * 160)
 
 		# Only process rows 16 through 181
-		if y < 16 or y > 152:
-			continue
-
-		# Don't process a strip across the middle where the congratulatory text goes
-		if y > 98 and y < 119:
+		#if y < 16 or y > 152:
+		if y < 16 or y > 180:
 			continue
 
 		begin = 0
@@ -67,8 +60,6 @@ with open("victory.vef", "rb") as FILE:
 
 		# Row token
 		print('* Row ' + str(y) + ':')
-		#print(' FDB ' + hex(rowaddress + begin - 32))	# Starting address
-		#print(' FDB ' + hex(rowaddress + begin))	# Starting address
 		print(' FDB ' + hex(rowaddress + begin - 16))	# Starting address
 		print()
 		total += 2
