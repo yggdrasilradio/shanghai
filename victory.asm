@@ -1,5 +1,5 @@
 * Row 16:
- FDB 0x99d6
+ FDB 0x9396
 
 * Row 16 data:
  FCB 8
@@ -8,14 +8,14 @@
  FCB 0xFF
 
 * Row 17:
- FDB 0x9a78
+ FDB 0x9438
 
 * Row 17 data:
  FCB 70
  FCB 0xFF
 
 * Row 18:
- FDB 0x9b18
+ FDB 0x94d8
 
 * Row 18 data:
  FCB 8
@@ -23,7 +23,7 @@
  FCB 0xFF
 
 * Row 19:
- FDB 0x9bb9
+ FDB 0x9579
 
 * Row 19 data:
  FCB 77
@@ -35,7 +35,7 @@
  FCB 0xFF
 
 * Row 20:
- FDB 0x9c54
+ FDB 0x9614
 
 * Row 20 data:
  FCB 89
@@ -50,7 +50,7 @@
  FCB 0xFF
 
 * Row 21:
- FDB 0x9cf6
+ FDB 0x96b6
 
 * Row 21 data:
  FCB 70
@@ -64,7 +64,7 @@
  FCB 0xFF
 
 * Row 22:
- FDB 0x9d96
+ FDB 0x9756
 
 * Row 22 data:
  FCB 89
@@ -78,7 +78,7 @@
  FCB 0xFF
 
 * Row 23:
- FDB 0x9e36
+ FDB 0x97f6
 
 * Row 23 data:
  FCB 79
@@ -98,7 +98,7 @@
  FCB 0xFF
 
 * Row 24:
- FDB 0x9ed6
+ FDB 0x9896
 
 * Row 24 data:
  FCB 8
@@ -116,7 +116,7 @@
  FCB 0xFF
 
 * Row 25:
- FDB 0x9f76
+ FDB 0x9936
 
 * Row 25 data:
  FCB 88
@@ -134,7 +134,7 @@
  FCB 0xFF
 
 * Row 26:
- FDB 0xa016
+ FDB 0x99d6
 
 * Row 26 data:
  FCB 9
@@ -152,7 +152,7 @@
  FCB 0xFF
 
 * Row 27:
- FDB 0xa0b6
+ FDB 0x9a76
 
 * Row 27 data:
  FCB 9
@@ -170,7 +170,7 @@
  FCB 0xFF
 
 * Row 28:
- FDB 0xa156
+ FDB 0x9b16
 
 * Row 28 data:
  FCB 87
@@ -185,7 +185,7 @@
  FCB 0xFF
 
 * Row 29:
- FDB 0xa1f5
+ FDB 0x9bb5
 
 * Row 29 data:
  FCB 9
@@ -203,7 +203,7 @@
  FCB 0xFF
 
 * Row 30:
- FDB 0xa295
+ FDB 0x9c55
 
 * Row 30 data:
  FCB 87
@@ -222,7 +222,7 @@
  FCB 0xFF
 
 * Row 31:
- FDB 0xa334
+ FDB 0x9cf4
 
 * Row 31 data:
  FCB 9
@@ -243,7 +243,7 @@
  FCB 0xFF
 
 * Row 32:
- FDB 0xa3d3
+ FDB 0x9d93
 
 * Row 32 data:
  FCB 8
@@ -268,7 +268,7 @@
  FCB 0xFF
 
 * Row 33:
- FDB 0xa473
+ FDB 0x9e33
 
 * Row 33 data:
  FCB 8
@@ -296,7 +296,7 @@
  FCB 0xFF
 
 * Row 34:
- FDB 0xa513
+ FDB 0x9ed3
 
 * Row 34 data:
  FCB 9
@@ -325,7 +325,7 @@
  FCB 0xFF
 
 * Row 35:
- FDB 0xa5b3
+ FDB 0x9f73
 
 * Row 35 data:
  FCB 9
@@ -363,7 +363,7 @@
  FCB 0xFF
 
 * Row 36:
- FDB 0xa653
+ FDB 0xa013
 
 * Row 36 data:
  FCB 9
@@ -401,7 +401,7 @@
  FCB 0xFF
 
 * Row 37:
- FDB 0xa6f3
+ FDB 0xa0b3
 
 * Row 37 data:
  FCB 9
@@ -436,7 +436,7 @@
  FCB 0xFF
 
 * Row 38:
- FDB 0xa793
+ FDB 0xa153
 
 * Row 38 data:
  FCB 8
@@ -475,7 +475,7 @@
  FCB 0xFF
 
 * Row 39:
- FDB 0xa833
+ FDB 0xa1f3
 
 * Row 39 data:
  FCB 8
@@ -512,7 +512,7 @@
  FCB 0xFF
 
 * Row 40:
- FDB 0xa8d3
+ FDB 0xa293
 
 * Row 40 data:
  FCB 73
@@ -555,7 +555,7 @@
  FCB 0xFF
 
 * Row 41:
- FDB 0xa973
+ FDB 0xa333
 
 * Row 41 data:
  FCB 89
@@ -599,7 +599,7 @@
  FCB 0xFF
 
 * Row 42:
- FDB 0xaa13
+ FDB 0xa3d3
 
 * Row 42 data:
  FCB 87
@@ -643,7 +643,7 @@
  FCB 0xFF
 
 * Row 43:
- FDB 0xaab2
+ FDB 0xa472
 
 * Row 43 data:
  FCB 8
@@ -683,7 +683,7 @@
  FCB 0xFF
 
 * Row 44:
- FDB 0xab52
+ FDB 0xa512
 
 * Row 44 data:
  FCB 9
@@ -723,7 +723,7 @@
  FCB 0xFF
 
 * Row 45:
- FDB 0xabf2
+ FDB 0xa5b2
 
 * Row 45 data:
  FCB 9
@@ -770,7 +770,7 @@
  FCB 0xFF
 
 * Row 46:
- FDB 0xac92
+ FDB 0xa652
 
 * Row 46 data:
  FCB 7
@@ -818,7 +818,7 @@
  FCB 0xFF
 
 * Row 47:
- FDB 0xad32
+ FDB 0xa6f2
 
 * Row 47 data:
  FCB 77
@@ -862,7 +862,7 @@
  FCB 0xFF
 
 * Row 48:
- FDB 0xadd2
+ FDB 0xa792
 
 * Row 48 data:
  FCB 87
@@ -910,7 +910,7 @@
  FCB 0xFF
 
 * Row 49:
- FDB 0xae72
+ FDB 0xa832
 
 * Row 49 data:
  FCB 87
@@ -959,7 +959,7 @@
  FCB 0xFF
 
 * Row 50:
- FDB 0xaf12
+ FDB 0xa8d2
 
 * Row 50 data:
  FCB 72
@@ -1007,7 +1007,7 @@
  FCB 0xFF
 
 * Row 51:
- FDB 0xafb2
+ FDB 0xa972
 
 * Row 51 data:
  FCB 66
@@ -1057,7 +1057,7 @@
  FCB 0xFF
 
 * Row 52:
- FDB 0xb051
+ FDB 0xaa11
 
 * Row 52 data:
  FCB 8
@@ -1110,7 +1110,7 @@
  FCB 0xFF
 
 * Row 53:
- FDB 0xb0e9
+ FDB 0xaaa9
 
 * Row 53 data:
  FCB 7
@@ -1173,7 +1173,7 @@
  FCB 0xFF
 
 * Row 54:
- FDB 0xb18a
+ FDB 0xab4a
 
 * Row 54 data:
  FCB 70
@@ -1233,7 +1233,7 @@
  FCB 0xFF
 
 * Row 55:
- FDB 0xb22a
+ FDB 0xabea
 
 * Row 55 data:
  FCB 77
@@ -1302,7 +1302,7 @@
  FCB 0xFF
 
 * Row 56:
- FDB 0xb2c1
+ FDB 0xac81
 
 * Row 56 data:
  FCB 89
@@ -1363,7 +1363,7 @@
  FCB 0xFF
 
 * Row 57:
- FDB 0xb362
+ FDB 0xad22
 
 * Row 57 data:
  FCB 9
@@ -1429,7 +1429,7 @@
  FCB 0xFF
 
 * Row 58:
- FDB 0xb402
+ FDB 0xadc2
 
 * Row 58 data:
  FCB 73
@@ -1502,7 +1502,7 @@
  FCB 0xFF
 
 * Row 59:
- FDB 0xb4a2
+ FDB 0xae62
 
 * Row 59 data:
  FCB 9
@@ -1575,7 +1575,7 @@
  FCB 0xFF
 
 * Row 60:
- FDB 0xb542
+ FDB 0xaf02
 
 * Row 60 data:
  FCB 7
@@ -1645,7 +1645,7 @@
  FCB 0xFF
 
 * Row 61:
- FDB 0xb5d8
+ FDB 0xaf98
 
 * Row 61 data:
  FCB 89
@@ -1717,7 +1717,7 @@
  FCB 0xFF
 
 * Row 62:
- FDB 0xb679
+ FDB 0xb039
 
 * Row 62 data:
  FCB 9
@@ -1782,7 +1782,7 @@
  FCB 0xFF
 
 * Row 63:
- FDB 0xb719
+ FDB 0xb0d9
 
 * Row 63 data:
  FCB 73
@@ -1848,7 +1848,7 @@
  FCB 0xFF
 
 * Row 64:
- FDB 0xb7b9
+ FDB 0xb179
 
 * Row 64 data:
  FCB 9
@@ -1918,7 +1918,7 @@
  FCB 0xFF
 
 * Row 65:
- FDB 0xb859
+ FDB 0xb219
 
 * Row 65 data:
  FCB 9
@@ -1980,7 +1980,7 @@
  FCB 0xFF
 
 * Row 66:
- FDB 0xb8f9
+ FDB 0xb2b9
 
 * Row 66 data:
  FCB 9
@@ -2045,7 +2045,7 @@
  FCB 0xFF
 
 * Row 67:
- FDB 0xb999
+ FDB 0xb359
 
 * Row 67 data:
  FCB 9
@@ -2114,7 +2114,7 @@
  FCB 0xFF
 
 * Row 68:
- FDB 0xba39
+ FDB 0xb3f9
 
 * Row 68 data:
  FCB 9
@@ -2183,7 +2183,7 @@
  FCB 0xFF
 
 * Row 69:
- FDB 0xbada
+ FDB 0xb49a
 
 * Row 69 data:
  FCB $80|70,10
@@ -2252,7 +2252,7 @@
  FCB 0xFF
 
 * Row 70:
- FDB 0xbb79
+ FDB 0xb539
 
 * Row 70 data:
  FCB 87
@@ -2321,7 +2321,7 @@
  FCB 0xFF
 
 * Row 71:
- FDB 0xbc18
+ FDB 0xb5d8
 
 * Row 71 data:
  FCB 7
@@ -2396,7 +2396,7 @@
  FCB 0xFF
 
 * Row 72:
- FDB 0xbcb7
+ FDB 0xb677
 
 * Row 72 data:
  FCB 8
@@ -2479,7 +2479,7 @@
  FCB 0xFF
 
 * Row 73:
- FDB 0xbd54
+ FDB 0xb714
 
 * Row 73 data:
  FCB 9
@@ -2568,7 +2568,7 @@
  FCB 0xFF
 
 * Row 74:
- FDB 0xbdf2
+ FDB 0xb7b2
 
 * Row 74 data:
  FCB 9
@@ -2656,7 +2656,7 @@
  FCB 0xFF
 
 * Row 75:
- FDB 0xbe91
+ FDB 0xb851
 
 * Row 75 data:
  FCB 9
@@ -2743,7 +2743,7 @@
  FCB 0xFF
 
 * Row 76:
- FDB 0xbf30
+ FDB 0xb8f0
 
 * Row 76 data:
  FCB 9
@@ -2829,7 +2829,7 @@
  FCB 0xFF
 
 * Row 77:
- FDB 0xbfd0
+ FDB 0xb990
 
 * Row 77 data:
  FCB 87
@@ -2922,7 +2922,7 @@
  FCB 0xFF
 
 * Row 78:
- FDB 0xc06f
+ FDB 0xba2f
 
 * Row 78 data:
  FCB 9
@@ -3018,7 +3018,7 @@
  FCB 0xFF
 
 * Row 79:
- FDB 0xc111
+ FDB 0xbad1
 
 * Row 79 data:
  FCB 8
@@ -3106,7 +3106,7 @@
  FCB 0xFF
 
 * Row 80:
- FDB 0xc1b4
+ FDB 0xbb74
 
 * Row 80 data:
  FCB 87
@@ -3192,7 +3192,7 @@
  FCB 0xFF
 
 * Row 81:
- FDB 0xc253
+ FDB 0xbc13
 
 * Row 81 data:
  FCB 8
@@ -3272,7 +3272,7 @@
  FCB 0xFF
 
 * Row 82:
- FDB 0xc2f3
+ FDB 0xbcb3
 
 * Row 82 data:
  FCB 9
@@ -3354,7 +3354,7 @@
  FCB 0xFF
 
 * Row 83:
- FDB 0xc393
+ FDB 0xbd53
 
 * Row 83 data:
  FCB 79
@@ -3440,7 +3440,7 @@
  FCB 0xFF
 
 * Row 84:
- FDB 0xc432
+ FDB 0xbdf2
 
 * Row 84 data:
  FCB 73
@@ -3526,7 +3526,7 @@
  FCB 0xFF
 
 * Row 85:
- FDB 0xc4d0
+ FDB 0xbe90
 
 * Row 85 data:
  FCB 9
@@ -3618,7 +3618,7 @@
  FCB 0xFF
 
 * Row 86:
- FDB 0xc56f
+ FDB 0xbf2f
 
 * Row 86 data:
  FCB 9
@@ -3707,7 +3707,7 @@
  FCB 0xFF
 
 * Row 87:
- FDB 0xc60e
+ FDB 0xbfce
 
 * Row 87 data:
  FCB 8
@@ -3796,7 +3796,7 @@
  FCB 0xFF
 
 * Row 88:
- FDB 0xc6ae
+ FDB 0xc06e
 
 * Row 88 data:
  FCB 70
@@ -3886,7 +3886,7 @@
  FCB 0xFF
 
 * Row 89:
- FDB 0xc74d
+ FDB 0xc10d
 
 * Row 89 data:
  FCB 89
@@ -3975,7 +3975,7 @@
  FCB 0xFF
 
 * Row 90:
- FDB 0xc7ec
+ FDB 0xc1ac
 
 * Row 90 data:
  FCB 77
@@ -4068,7 +4068,7 @@
  FCB 0xFF
 
 * Row 91:
- FDB 0xc88b
+ FDB 0xc24b
 
 * Row 91 data:
  FCB 8
@@ -4161,7 +4161,7 @@
  FCB 0xFF
 
 * Row 92:
- FDB 0xc92b
+ FDB 0xc2eb
 
 * Row 92 data:
  FCB 87
@@ -4259,7 +4259,7 @@
  FCB 0xFF
 
 * Row 93:
- FDB 0xc9ca
+ FDB 0xc38a
 
 * Row 93 data:
  FCB 9
@@ -4358,7 +4358,7 @@
  FCB 0xFF
 
 * Row 94:
- FDB 0xca6a
+ FDB 0xc42a
 
 * Row 94 data:
  FCB 8
@@ -4449,7 +4449,7 @@
  FCB 0xFF
 
 * Row 95:
- FDB 0xcb10
+ FDB 0xc4d0
 
 * Row 95 data:
  FCB 80
@@ -4535,7 +4535,7 @@
  FCB 0xFF
 
 * Row 96:
- FDB 0xcbaf
+ FDB 0xc56f
 
 * Row 96 data:
  FCB 9
@@ -4635,7 +4635,7 @@
  FCB 0xFF
 
 * Row 97:
- FDB 0xcc4f
+ FDB 0xc60f
 
 * Row 97 data:
  FCB 87
@@ -4729,7 +4729,7 @@
  FCB 0xFF
 
 * Row 98:
- FDB 0xccef
+ FDB 0xc6af
 
 * Row 98 data:
  FCB 66
@@ -4810,1462 +4810,8 @@
  FCB 28
  FCB 0xFF
 
-* Row 99:
- FDB 0xcd8e
-
-* Row 99 data:
- FCB 9
- FCB 8
- FCB 89
- FCB 70
- FCB 70
- FCB 72
- FCB 78
- FCB $80|89,3
- FCB 88
- FCB 0
- FCB 9
- FCB 87
- FCB 89
- FCB 72
- FCB 66
- FCB 7
- FCB 79
- FCB 80
- FCB $80|0,6
- FCB 9
- FCB 70
- FCB 72
- FCB 73
- FCB 9
- FCB 70
- FCB 70
- FCB 0
- FCB 8
- FCB $80|0,3
- FCB 8
- FCB 89
- FCB 88
- FCB 79
- FCB $80|70,4
- FCB 80
- FCB 87
- FCB 89
- FCB 0
- FCB 70
- FCB 73
- FCB 0
- FCB 8
- FCB 0
- FCB 87
- FCB 0
- FCB 87
- FCB $80|70,4
- FCB 88
- FCB 0
- FCB 0
- FCB 8
- FCB 89
- FCB 77
- FCB 70
- FCB 70
- FCB 80
- FCB 73
- FCB $80|89,5
- FCB 80
- FCB 8
- FCB 70
- FCB 70
- FCB 80
- FCB 87
- FCB 72
- FCB 0
- FCB 87
- FCB 72
- FCB $80|0,33
- FCB 1
- FCB $80|0,4
- FCB 12
- FCB 0
- FCB 2
- FCB 0xFF
-
-* Row 100:
- FDB 0xce2e
-
-* Row 100 data:
- FCB 87
- FCB 79
- FCB 72
- FCB 70
- FCB 70
- FCB 89
- FCB 79
- FCB $80|89,3
- FCB 80
- FCB 0
- FCB 89
- FCB 72
- FCB 7
- FCB 70
- FCB 66
- FCB 9
- FCB 66
- FCB 80
- FCB $80|0,7
- FCB 79
- FCB 70
- FCB 72
- FCB 87
- FCB 70
- FCB 70
- FCB 0
- FCB 0
- FCB 73
- FCB 0
- FCB 0
- FCB 8
- FCB 89
- FCB 89
- FCB 80
- FCB $80|70,4
- FCB 72
- FCB 8
- FCB 88
- FCB 0
- FCB 70
- FCB 73
- FCB 0
- FCB 8
- FCB 88
- FCB 77
- FCB 71
- FCB 0
- FCB 79
- FCB $80|70,4
- FCB 88
- FCB 0
- FCB 0
- FCB 79
- FCB $80|89,3
- FCB 87
- FCB 72
- FCB 0
- FCB 79
- FCB $80|89,3
- FCB 88
- FCB 8
- FCB 70
- FCB 87
- FCB 8
- FCB 70
- FCB 72
- FCB 0
- FCB 7
- FCB 70
- FCB $80|0,38
- FCB 1
- FCB 0xFF
-
-* Row 101:
- FDB 0xcece
-
-* Row 101 data:
- FCB 71
- FCB 89
- FCB $80|70,3
- FCB 72
- FCB 79
- FCB $80|89,3
- FCB 80
- FCB 0
- FCB 89
- FCB 66
- FCB 87
- FCB 70
- FCB 80
- FCB 0
- FCB 70
- FCB 73
- FCB $80|0,7
- FCB 8
- FCB 87
- FCB $80|70,3
- FCB 72
- FCB 0
- FCB 0
- FCB 73
- FCB $80|0,3
- FCB 79
- FCB 89
- FCB 73
- FCB $80|70,5
- FCB 73
- FCB 73
- FCB 0
- FCB 70
- FCB 73
- FCB 8
- FCB 89
- FCB 87
- FCB 89
- FCB 70
- FCB 66
- FCB 0
- FCB 78
- FCB 87
- FCB 70
- FCB 70
- FCB 72
- FCB 73
- FCB 0
- FCB 0
- FCB 78
- FCB 0
- FCB 0
- FCB 79
- FCB 88
- FCB 80
- FCB 0
- FCB 79
- FCB 89
- FCB 89
- FCB 88
- FCB 8
- FCB 70
- FCB 72
- FCB 8
- FCB 70
- FCB 72
- FCB 0
- FCB 87
- FCB 70
- FCB 80
- FCB 0xFF
-
-* Row 102:
- FDB 0xcf6d
-
-* Row 102 data:
- FCB 9
- FCB 71
- FCB 89
- FCB 72
- FCB 70
- FCB 70
- FCB 71
- FCB $80|89,4
- FCB 80
- FCB 0
- FCB 89
- FCB 71
- FCB 87
- FCB 9
- FCB 8
- FCB 0
- FCB 87
- FCB 88
- FCB $80|0,8
- FCB 79
- FCB 89
- FCB 70
- FCB 70
- FCB 80
- FCB $80|0,6
- FCB 78
- FCB 89
- FCB 89
- FCB 87
- FCB $80|70,4
- FCB 80
- FCB 73
- FCB 8
- FCB 70
- FCB 73
- FCB 0
- FCB 8
- FCB 78
- FCB 70
- FCB 7
- FCB 72
- FCB 73
- FCB 8
- FCB $80|87,4
- FCB 88
- FCB 0
- FCB 8
- FCB 80
- FCB 0
- FCB 0
- FCB 88
- FCB 0
- FCB 8
- FCB 0
- FCB 8
- FCB $80|89,3
- FCB 0
- FCB 87
- FCB 72
- FCB 9
- FCB 70
- FCB 89
- FCB 0
- FCB 79
- FCB 70
- FCB 66
- FCB 0xFF
-
-* Row 103:
- FDB 0xd00d
-
-* Row 103 data:
- FCB 7
- FCB 80
- FCB 72
- FCB 72
- FCB 70
- FCB 70
- FCB 88
- FCB $80|89,4
- FCB 73
- FCB 0
- FCB 9
- FCB 66
- FCB 89
- FCB 9
- FCB 9
- FCB 72
- FCB 87
- FCB 72
- FCB $80|0,9
- FCB 87
- FCB 70
- FCB 80
- FCB $80|0,3
- FCB 8
- FCB $80|0,3
- FCB 8
- FCB 89
- FCB 80
- FCB 7
- FCB $80|70,4
- FCB 71
- FCB 0
- FCB 9
- FCB 70
- FCB 73
- FCB 73
- FCB 0
- FCB 0
- FCB 77
- FCB 71
- FCB 71
- FCB 0
- FCB 0
- FCB 8
- FCB 70
- FCB 70
- FCB 72
- FCB 78
- FCB 73
- FCB 9
- FCB 73
- FCB 0
- FCB 8
- FCB 80
- FCB 0
- FCB 79
- FCB 0
- FCB 0
- FCB 79
- FCB 89
- FCB 89
- FCB 88
- FCB 87
- FCB 88
- FCB 77
- FCB 70
- FCB 72
- FCB 8
- FCB 0
- FCB 87
- FCB 72
- FCB 0xFF
-
-* Row 104:
- FDB 0xd0ad
-
-* Row 104 data:
- FCB 87
- FCB 8
- FCB 72
- FCB 88
- FCB 70
- FCB 70
- FCB 72
- FCB 79
- FCB $80|89,3
- FCB $80|0,3
- FCB 80
- FCB 87
- FCB 0
- FCB 7
- FCB 66
- FCB 79
- FCB 0
- FCB 87
- FCB 71
- FCB $80|0,10
- FCB 73
- FCB 73
- FCB 0
- FCB 0
- FCB 73
- FCB 0
- FCB 0
- FCB 8
- FCB 9
- FCB 89
- FCB 89
- FCB $80|70,5
- FCB 73
- FCB 9
- FCB 70
- FCB 73
- FCB 89
- FCB 80
- FCB 87
- FCB 7
- FCB 70
- FCB 70
- FCB 78
- FCB 77
- FCB 70
- FCB 87
- FCB 70
- FCB 70
- FCB 89
- FCB 88
- FCB 8
- FCB 88
- FCB 8
- FCB 9
- FCB 73
- FCB 8
- FCB 9
- FCB 88
- FCB 0
- FCB 8
- FCB 9
- FCB 89
- FCB 89
- FCB 88
- FCB 88
- FCB 70
- FCB 70
- FCB 80
- FCB 79
- FCB 72
- FCB 87
- FCB 70
- FCB 80
- FCB 0xFF
-
-* Row 105:
- FDB 0xd14d
-
-* Row 105 data:
- FCB 87
- FCB 7
- FCB 88
- FCB 88
- FCB 70
- FCB 70
- FCB 71
- FCB $80|89,4
- FCB $80|0,3
- FCB 80
- FCB 87
- FCB 9
- FCB 9
- FCB 70
- FCB 8
- FCB 0
- FCB 0
- FCB 7
- FCB 72
- FCB 80
- FCB $80|0,5
- FCB 73
- FCB 9
- FCB 70
- FCB 88
- FCB $80|0,3
- FCB 78
- FCB $80|0,3
- FCB 9
- FCB 89
- FCB 89
- FCB 87
- FCB $80|70,4
- FCB 80
- FCB 9
- FCB 70
- FCB 73
- FCB 0
- FCB 9
- FCB 70
- FCB 9
- FCB 70
- FCB 70
- FCB 72
- FCB 87
- FCB $80|70,6
- FCB 89
- FCB 89
- FCB 80
- FCB 0
- FCB 89
- FCB 73
- FCB 0
- FCB 87
- FCB 80
- FCB 79
- FCB 9
- FCB 89
- FCB 88
- FCB 9
- FCB 79
- FCB 70
- FCB 70
- FCB 73
- FCB 89
- FCB 72
- FCB 89
- FCB 70
- FCB 72
- FCB 0xFF
-
-* Row 106:
- FDB 0xd1ed
-
-* Row 106 data:
- FCB 87
- FCB 72
- FCB 73
- FCB 8
- FCB 70
- FCB 70
- FCB 66
- FCB 79
- FCB $80|89,3
- FCB $80|0,3
- FCB 89
- FCB 70
- FCB 8
- FCB 80
- FCB 70
- FCB 0
- FCB 88
- FCB 78
- FCB 9
- FCB 70
- FCB 72
- FCB $80|0,4
- FCB 8
- FCB 73
- FCB 87
- FCB 70
- FCB 71
- FCB $80|0,3
- FCB 8
- FCB $80|0,3
- FCB 73
- FCB 89
- FCB 89
- FCB 87
- FCB $80|70,4
- FCB 72
- FCB 9
- FCB 70
- FCB 80
- FCB 0
- FCB 7
- FCB 70
- FCB 80
- FCB 72
- FCB 87
- FCB $80|70,9
- FCB 88
- FCB 9
- FCB 80
- FCB 87
- FCB 89
- FCB 73
- FCB 8
- FCB 87
- FCB 89
- FCB 9
- FCB 89
- FCB 9
- FCB 73
- FCB 77
- FCB 70
- FCB 72
- FCB 8
- FCB 87
- FCB 70
- FCB 80
- FCB 87
- FCB 72
- FCB 0xFF
-
-* Row 107:
- FDB 0xd28d
-
-* Row 107 data:
- FCB 87
- FCB 80
- FCB 0
- FCB 8
- FCB 70
- FCB 70
- FCB 71
- FCB $80|89,4
- FCB 0
- FCB 0
- FCB 9
- FCB 9
- FCB 72
- FCB 77
- FCB 72
- FCB 7
- FCB 66
- FCB 89
- FCB 80
- FCB 79
- FCB 72
- FCB 9
- FCB $80|0,3
- FCB 8
- FCB 89
- FCB 80
- FCB 70
- FCB 70
- FCB 80
- FCB 80
- FCB 0
- FCB 0
- FCB 8
- FCB 8
- FCB $80|0,3
- FCB 89
- FCB 89
- FCB 9
- FCB 87
- FCB $80|70,4
- FCB 8
- FCB 70
- FCB 80
- FCB 78
- FCB 70
- FCB 7
- FCB 66
- FCB 89
- FCB $80|70,3
- FCB 89
- FCB 88
- FCB $80|78,3
- FCB 89
- FCB 70
- FCB 72
- FCB 73
- FCB 87
- FCB 73
- FCB 70
- FCB 88
- FCB 0
- FCB 8
- FCB 72
- FCB 73
- FCB 89
- FCB 9
- FCB 80
- FCB 87
- FCB 70
- FCB 72
- FCB 8
- FCB 87
- FCB 72
- FCB 80
- FCB 77
- FCB 72
- FCB 0xFF
-
-* Row 108:
- FDB 0xd32d
-
-* Row 108 data:
- FCB 79
- FCB 0
- FCB 0
- FCB 8
- FCB 70
- FCB 70
- FCB 71
- FCB 79
- FCB $80|89,3
- FCB 0
- FCB 0
- FCB 87
- FCB 72
- FCB 7
- FCB 88
- FCB 70
- FCB 0
- FCB 70
- FCB 8
- FCB 80
- FCB 77
- FCB 70
- FCB 77
- FCB $80|0,3
- FCB 9
- FCB 89
- FCB 7
- FCB 70
- FCB 72
- FCB 8
- FCB 89
- FCB $80|0,6
- FCB 8
- FCB 89
- FCB 89
- FCB 88
- FCB 87
- FCB $80|70,4
- FCB 66
- FCB 70
- FCB 80
- FCB 9
- FCB 87
- FCB 7
- FCB 66
- FCB 89
- FCB 70
- FCB 72
- FCB 80
- FCB $80|0,6
- FCB 8
- FCB 87
- FCB $80|70,3
- FCB 88
- FCB 70
- FCB 88
- FCB 73
- FCB 87
- FCB 80
- FCB 89
- FCB 89
- FCB 88
- FCB 89
- FCB 70
- FCB 80
- FCB 78
- FCB 70
- FCB 70
- FCB 80
- FCB 87
- FCB 70
- FCB 80
- FCB 0xFF
-
-* Row 109:
- FDB 0xd3cd
-
-* Row 109 data:
- FCB 8
- FCB $80|0,3
- FCB 87
- FCB 70
- FCB 66
- FCB $80|89,4
- FCB 0
- FCB 8
- FCB 87
- FCB 70
- FCB 70
- FCB 80
- FCB 70
- FCB 87
- FCB 70
- FCB 80
- FCB 73
- FCB 77
- FCB 72
- FCB 77
- FCB 80
- FCB 0
- FCB 0
- FCB 89
- FCB 89
- FCB 87
- FCB 70
- FCB 66
- FCB 89
- FCB 9
- FCB $80|0,3
- FCB 73
- FCB $80|0,3
- FCB 9
- FCB 89
- FCB 89
- FCB 87
- FCB $80|70,4
- FCB 72
- FCB 70
- FCB 80
- FCB 77
- FCB 73
- FCB 9
- FCB 72
- FCB 9
- FCB 70
- FCB 80
- FCB 0
- FCB 0
- FCB 73
- FCB 0
- FCB 0
- FCB 78
- FCB 73
- FCB 0
- FCB 0
- FCB 79
- FCB 87
- FCB 70
- FCB 72
- FCB 9
- FCB 72
- FCB 89
- FCB 72
- FCB 80
- FCB $80|89,3
- FCB 87
- FCB 70
- FCB 73
- FCB 77
- FCB 70
- FCB 72
- FCB 89
- FCB 70
- FCB 70
- FCB 80
- FCB 0xFF
-
-* Row 110:
- FDB 0xd471
-
-* Row 110 data:
- FCB 77
- FCB 70
- FCB 80
- FCB $80|89,4
- FCB 0
- FCB 0
- FCB 80
- FCB 77
- FCB 66
- FCB 0
- FCB 87
- FCB 70
- FCB 70
- FCB 80
- FCB 0
- FCB 87
- FCB 71
- FCB 7
- FCB 80
- FCB 0
- FCB 0
- FCB 89
- FCB 9
- FCB 70
- FCB 70
- FCB 0
- FCB 9
- FCB 71
- FCB $80|0,7
- FCB 9
- FCB 89
- FCB 89
- FCB 9
- FCB $80|70,6
- FCB 78
- FCB 87
- FCB 0
- FCB 8
- FCB 70
- FCB 9
- FCB 89
- FCB $80|0,8
- FCB 73
- FCB 78
- FCB 0
- FCB 8
- FCB 87
- FCB 70
- FCB 72
- FCB 87
- FCB 72
- FCB 70
- FCB 73
- FCB 8
- FCB 89
- FCB 80
- FCB 87
- FCB 72
- FCB 8
- FCB 87
- FCB 70
- FCB 88
- FCB 79
- FCB 70
- FCB 70
- FCB 80
- FCB 0xFF
-
-* Row 111:
- FDB 0xd511
-
-* Row 111 data:
- FCB 77
- FCB 70
- FCB 88
- FCB $80|89,4
- FCB 0
- FCB 8
- FCB 70
- FCB $80|0,3
- FCB 9
- FCB 71
- FCB 87
- FCB 71
- FCB 0
- FCB 9
- FCB 70
- FCB $80|0,3
- FCB 9
- FCB 89
- FCB 7
- FCB 70
- FCB 71
- FCB 0
- FCB 9
- FCB 70
- FCB 73
- FCB 0
- FCB 0
- FCB 8
- FCB $80|0,3
- FCB 8
- FCB 89
- FCB 89
- FCB 80
- FCB 77
- FCB $80|70,5
- FCB 0
- FCB 70
- FCB 80
- FCB 9
- FCB 70
- FCB 9
- FCB 80
- FCB 0
- FCB 73
- FCB $80|0,10
- FCB 8
- FCB 87
- FCB $80|70,4
- FCB 88
- FCB 9
- FCB 9
- FCB 89
- FCB 7
- FCB 88
- FCB 89
- FCB 87
- FCB 72
- FCB 78
- FCB 79
- FCB 87
- FCB 70
- FCB 72
- FCB 0xFF
-
-* Row 112:
- FDB 0xd5b1
-
-* Row 112 data:
- FCB 77
- FCB 70
- FCB 71
- FCB $80|89,4
- FCB 0
- FCB 87
- FCB 88
- FCB $80|0,3
- FCB 8
- FCB 72
- FCB 8
- FCB 66
- FCB 0
- FCB 8
- FCB 87
- FCB 9
- FCB 0
- FCB 0
- FCB 9
- FCB 89
- FCB 7
- FCB 70
- FCB 80
- FCB 79
- FCB 89
- FCB 70
- FCB 66
- FCB 0
- FCB 0
- FCB 8
- FCB $80|0,3
- FCB 8
- FCB $80|89,3
- FCB 79
- FCB $80|70,5
- FCB 8
- FCB 87
- FCB 78
- FCB 79
- FCB 70
- FCB 9
- FCB $80|0,14
- FCB 8
- FCB 87
- FCB $80|70,4
- FCB 73
- FCB 79
- FCB 89
- FCB 8
- FCB 9
- FCB 87
- FCB 70
- FCB 66
- FCB 79
- FCB 73
- FCB 87
- FCB 70
- FCB 72
- FCB 0xFF
-
-* Row 113:
- FDB 0xd651
-
-* Row 113 data:
- FCB 9
- FCB 70
- FCB 71
- FCB $80|89,4
- FCB $80|0,6
- FCB 7
- FCB 71
- FCB 0
- FCB 80
- FCB $80|0,3
- FCB 77
- FCB 71
- FCB 0
- FCB 9
- FCB 88
- FCB 87
- FCB 70
- FCB 73
- FCB 87
- FCB 8
- FCB 89
- FCB 70
- FCB $80|0,3
- FCB 73
- FCB 0
- FCB 0
- FCB 8
- FCB $80|89,3
- FCB 88
- FCB 77
- FCB 87
- FCB 70
- FCB 70
- FCB 72
- FCB 88
- FCB 79
- FCB 88
- FCB 80
- FCB 87
- FCB 80
- FCB $80|0,13
- FCB 8
- FCB 0
- FCB 8
- FCB 89
- FCB 70
- FCB 88
- FCB 89
- FCB 80
- FCB 8
- FCB 89
- FCB 88
- FCB 89
- FCB 72
- FCB 70
- FCB 89
- FCB 89
- FCB 73
- FCB 87
- FCB 70
- FCB 72
- FCB 0xFF
-
-* Row 114:
- FDB 0xd6f1
-
-* Row 114 data:
- FCB 8
- FCB 70
- FCB 66
- FCB $80|89,4
- FCB $80|0,6
- FCB 9
- FCB 80
- FCB $80|0,5
- FCB 9
- FCB 70
- FCB 0
- FCB 89
- FCB 80
- FCB 87
- FCB 72
- FCB 0
- FCB 87
- FCB 8
- FCB 80
- FCB 9
- FCB 70
- FCB 73
- FCB 0
- FCB 0
- FCB 8
- FCB 0
- FCB 0
- FCB 79
- FCB 89
- FCB 89
- FCB 88
- FCB 79
- FCB 72
- FCB $80|70,3
- FCB 87
- FCB 8
- FCB 87
- FCB 7
- FCB 7
- FCB 66
- FCB $80|0,3
- FCB 7
- FCB $80|0,12
- FCB 8
- FCB 89
- FCB 88
- FCB 89
- FCB 89
- FCB 80
- FCB 73
- FCB 9
- FCB 87
- FCB 70
- FCB 89
- FCB 9
- FCB 72
- FCB 78
- FCB 87
- FCB 70
- FCB 72
- FCB 0xFF
-
-* Row 115:
- FDB 0xd792
-
-* Row 115 data:
- FCB 78
- FCB 71
- FCB 79
- FCB $80|89,3
- FCB $80|0,5
- FCB 9
- FCB 72
- FCB $80|0,6
- FCB 8
- FCB 70
- FCB 73
- FCB 89
- FCB 80
- FCB 70
- FCB 71
- FCB 0
- FCB 87
- FCB 80
- FCB 73
- FCB 0
- FCB 0
- FCB 70
- FCB 72
- FCB $80|0,4
- FCB 79
- FCB $80|89,3
- FCB 78
- FCB 89
- FCB $80|70,4
- FCB 66
- FCB 79
- FCB 72
- FCB 7
- FCB 66
- FCB $80|0,3
- FCB 77
- FCB 80
- FCB $80|0,3
- FCB 9
- FCB 80
- FCB $80|0,7
- FCB 9
- FCB 80
- FCB 0
- FCB 8
- FCB 79
- FCB 89
- FCB 0
- FCB 89
- FCB 70
- FCB 80
- FCB 87
- FCB 72
- FCB 8
- FCB 72
- FCB 70
- FCB 72
- FCB 0xFF
-
-* Row 116:
- FDB 0xd831
-
-* Row 116 data:
- FCB 9
- FCB 0
- FCB 0
- FCB 79
- FCB $80|89,3
- FCB 80
- FCB $80|0,4
- FCB 9
- FCB 87
- FCB $80|0,7
- FCB 87
- FCB 80
- FCB 89
- FCB 0
- FCB 70
- FCB 80
- FCB 79
- FCB 9
- FCB 66
- FCB 9
- FCB 78
- FCB 73
- FCB 87
- FCB 70
- FCB $80|0,3
- FCB 73
- FCB 78
- FCB 89
- FCB 89
- FCB 88
- FCB 89
- FCB 78
- FCB 72
- FCB $80|70,4
- FCB 66
- FCB 79
- FCB 9
- FCB 72
- FCB $80|0,3
- FCB 80
- FCB 66
- FCB $80|0,3
- FCB 9
- FCB 87
- FCB 71
- FCB $80|0,6
- FCB 9
- FCB 79
- FCB 80
- FCB 0
- FCB 0
- FCB 9
- FCB 8
- FCB 87
- FCB 71
- FCB 9
- FCB 70
- FCB 89
- FCB 8
- FCB 79
- FCB 70
- FCB 72
- FCB 0xFF
-
-* Row 117:
- FDB 0xd8d2
-
-* Row 117 data:
- FCB 87
- FCB 0
- FCB 9
- FCB $80|89,3
- FCB 80
- FCB $80|0,4
- FCB 88
- FCB $80|0,8
- FCB 77
- FCB 73
- FCB 89
- FCB 7
- FCB 70
- FCB 73
- FCB 79
- FCB 80
- FCB 87
- FCB 9
- FCB 89
- FCB 8
- FCB 87
- FCB 80
- FCB 80
- FCB $80|0,4
- FCB 79
- FCB 89
- FCB 89
- FCB 88
- FCB 88
- FCB 87
- FCB $80|70,5
- FCB 0
- FCB 0
- FCB 70
- FCB $80|0,3
- FCB 73
- FCB 72
- FCB $80|0,4
- FCB 80
- FCB 87
- FCB 72
- FCB 73
- FCB $80|0,4
- FCB 89
- FCB 80
- FCB 0
- FCB 0
- FCB 9
- FCB 71
- FCB 80
- FCB 89
- FCB 73
- FCB 89
- FCB 70
- FCB 72
- FCB 78
- FCB 79
- FCB 70
- FCB 72
- FCB 0xFF
-
-* Row 118:
- FDB 0xd972
-
-* Row 118 data:
- FCB 9
- FCB 88
- FCB 9
- FCB $80|89,3
- FCB 80
- FCB $80|0,13
- FCB 9
- FCB 9
- FCB 88
- FCB 87
- FCB 70
- FCB 9
- FCB 78
- FCB 80
- FCB 7
- FCB 66
- FCB 79
- FCB 8
- FCB 70
- FCB 71
- FCB 66
- FCB $80|0,4
- FCB 79
- FCB 89
- FCB 89
- FCB 88
- FCB 88
- FCB 79
- FCB 71
- FCB $80|70,4
- FCB 72
- FCB 0
- FCB 87
- FCB $80|0,3
- FCB 78
- FCB 7
- FCB 66
- FCB $80|0,3
- FCB 9
- FCB 0
- FCB 79
- FCB 70
- FCB 70
- FCB 89
- FCB 89
- FCB 78
- FCB 0
- FCB 0
- FCB 73
- FCB 78
- FCB 80
- FCB 80
- FCB 0
- FCB 88
- FCB 9
- FCB 70
- FCB 70
- FCB 89
- FCB 8
- FCB 79
- FCB 70
- FCB 72
- FCB 0xFF
-
 * Row 119:
- FDB 0xda13
+ FDB 0xd3d3
 
 * Row 119 data:
  FCB 87
@@ -6329,7 +4875,7 @@
  FCB 0xFF
 
 * Row 120:
- FDB 0xdab1
+ FDB 0xd471
 
 * Row 120 data:
  FCB 8
@@ -6394,4 +4940,1468 @@
  FCB 72
  FCB 0xFF
 
-* Total 6630
+* Row 121:
+ FDB 0xd511
+
+* Row 121 data:
+ FCB 8
+ FCB 73
+ FCB 0
+ FCB 80
+ FCB 79
+ FCB $80|89,3
+ FCB 80
+ FCB $80|0,13
+ FCB 89
+ FCB 79
+ FCB 70
+ FCB 66
+ FCB 0
+ FCB 0
+ FCB 87
+ FCB 79
+ FCB 70
+ FCB 73
+ FCB 0
+ FCB 87
+ FCB 66
+ FCB $80|0,5
+ FCB 8
+ FCB $80|89,4
+ FCB 79
+ FCB 89
+ FCB 79
+ FCB $80|70,6
+ FCB 78
+ FCB 0
+ FCB 0
+ FCB 7
+ FCB 80
+ FCB 9
+ FCB 70
+ FCB 73
+ FCB 0
+ FCB 0
+ FCB 7
+ FCB 80
+ FCB 0
+ FCB 0
+ FCB 72
+ FCB 87
+ FCB 70
+ FCB 72
+ FCB 89
+ FCB 87
+ FCB 88
+ FCB 0
+ FCB $80|89,3
+ FCB 72
+ FCB 70
+ FCB 89
+ FCB 0
+ FCB 0
+ FCB 87
+ FCB 70
+ FCB 72
+ FCB 0xFF
+
+* Row 122:
+ FDB 0xd5b2
+
+* Row 122 data:
+ FCB 78
+ FCB 0
+ FCB 0
+ FCB 79
+ FCB $80|89,3
+ FCB 80
+ FCB $80|0,13
+ FCB 89
+ FCB 89
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 0
+ FCB 77
+ FCB 80
+ FCB 77
+ FCB 0
+ FCB 0
+ FCB 79
+ FCB 66
+ FCB 80
+ FCB 0
+ FCB 73
+ FCB $80|0,3
+ FCB 88
+ FCB $80|89,6
+ FCB 87
+ FCB $80|70,6
+ FCB 88
+ FCB 0
+ FCB 7
+ FCB 80
+ FCB 0
+ FCB 87
+ FCB 72
+ FCB 0
+ FCB 8
+ FCB 87
+ FCB 71
+ FCB 8
+ FCB 9
+ FCB 70
+ FCB 70
+ FCB 88
+ FCB 8
+ FCB 89
+ FCB 8
+ FCB 72
+ FCB 0
+ FCB 78
+ FCB 89
+ FCB 89
+ FCB 87
+ FCB 72
+ FCB 73
+ FCB 0
+ FCB 8
+ FCB 87
+ FCB 70
+ FCB 72
+ FCB 0xFF
+
+* Row 123:
+ FDB 0xd652
+
+* Row 123 data:
+ FCB 89
+ FCB 7
+ FCB 80
+ FCB 9
+ FCB $80|89,4
+ FCB $80|0,13
+ FCB 89
+ FCB 7
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 0
+ FCB 70
+ FCB 73
+ FCB 9
+ FCB $80|0,3
+ FCB 8
+ FCB 70
+ FCB 73
+ FCB $80|0,4
+ FCB 79
+ FCB 79
+ FCB $80|89,3
+ FCB 88
+ FCB 88
+ FCB 79
+ FCB $80|70,7
+ FCB 88
+ FCB 7
+ FCB $80|0,3
+ FCB 87
+ FCB 72
+ FCB 9
+ FCB 87
+ FCB 70
+ FCB 80
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 80
+ FCB 89
+ FCB 70
+ FCB 66
+ FCB 79
+ FCB 0
+ FCB 78
+ FCB 89
+ FCB 89
+ FCB 70
+ FCB 88
+ FCB 0
+ FCB 9
+ FCB 72
+ FCB 72
+ FCB 70
+ FCB 72
+ FCB 0xFF
+
+* Row 124:
+ FDB 0xd6f2
+
+* Row 124 data:
+ FCB 79
+ FCB 78
+ FCB 72
+ FCB 8
+ FCB $80|89,4
+ FCB 73
+ FCB $80|0,12
+ FCB 89
+ FCB 7
+ FCB 70
+ FCB 73
+ FCB 0
+ FCB 0
+ FCB 89
+ FCB $80|0,6
+ FCB 87
+ FCB 66
+ FCB $80|0,4
+ FCB 9
+ FCB 79
+ FCB $80|89,5
+ FCB 78
+ FCB 87
+ FCB 87
+ FCB $80|70,6
+ FCB 72
+ FCB $80|0,3
+ FCB 9
+ FCB $80|70,3
+ FCB 71
+ FCB 9
+ FCB 70
+ FCB 71
+ FCB 78
+ FCB 9
+ FCB 70
+ FCB 70
+ FCB 87
+ FCB 0
+ FCB 8
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 0
+ FCB 9
+ FCB 70
+ FCB 73
+ FCB 87
+ FCB 70
+ FCB 88
+ FCB 0xFF
+
+* Row 125:
+ FDB 0xd792
+
+* Row 125 data:
+ FCB 79
+ FCB 88
+ FCB 87
+ FCB 80
+ FCB 79
+ FCB $80|89,4
+ FCB $80|0,12
+ FCB 89
+ FCB 77
+ FCB 70
+ FCB 0
+ FCB 0
+ FCB 87
+ FCB 80
+ FCB $80|0,6
+ FCB 77
+ FCB 71
+ FCB $80|0,4
+ FCB 8
+ FCB 78
+ FCB $80|89,4
+ FCB 88
+ FCB 88
+ FCB 79
+ FCB 87
+ FCB $80|70,7
+ FCB 72
+ FCB 88
+ FCB 0
+ FCB 0
+ FCB 87
+ FCB 88
+ FCB 87
+ FCB 73
+ FCB 70
+ FCB 70
+ FCB 89
+ FCB 73
+ FCB 79
+ FCB 87
+ FCB 72
+ FCB 72
+ FCB 0
+ FCB 0
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB 89
+ FCB 0
+ FCB 87
+ FCB 70
+ FCB 88
+ FCB 0xFF
+
+* Row 126:
+ FDB 0xd832
+
+* Row 126 data:
+ FCB 9
+ FCB 80
+ FCB 87
+ FCB 66
+ FCB 78
+ FCB $80|89,4
+ FCB $80|0,12
+ FCB 89
+ FCB 79
+ FCB 70
+ FCB 0
+ FCB 0
+ FCB 89
+ FCB 66
+ FCB $80|0,6
+ FCB 9
+ FCB 72
+ FCB $80|0,5
+ FCB 79
+ FCB $80|89,6
+ FCB 88
+ FCB 89
+ FCB $80|70,6
+ FCB 72
+ FCB 70
+ FCB 70
+ FCB 89
+ FCB 80
+ FCB 73
+ FCB 0
+ FCB 8
+ FCB 87
+ FCB 80
+ FCB 70
+ FCB 70
+ FCB 89
+ FCB 70
+ FCB 72
+ FCB 7
+ FCB 70
+ FCB 8
+ FCB 0
+ FCB 79
+ FCB 89
+ FCB 73
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB 88
+ FCB 0
+ FCB 87
+ FCB 70
+ FCB 88
+ FCB 0xFF
+
+* Row 127:
+ FDB 0xd8d2
+
+* Row 127 data:
+ FCB 9
+ FCB 88
+ FCB 9
+ FCB 72
+ FCB 88
+ FCB 78
+ FCB 89
+ FCB 89
+ FCB 8
+ FCB $80|0,12
+ FCB 89
+ FCB 7
+ FCB 70
+ FCB 0
+ FCB 9
+ FCB 73
+ FCB $80|0,7
+ FCB 8
+ FCB 71
+ FCB $80|0,5
+ FCB 8
+ FCB $80|89,6
+ FCB 79
+ FCB 78
+ FCB 87
+ FCB 87
+ FCB $80|70,5
+ FCB 72
+ FCB 77
+ FCB 78
+ FCB 72
+ FCB 88
+ FCB 80
+ FCB 79
+ FCB 70
+ FCB 9
+ FCB 87
+ FCB $80|70,4
+ FCB 80
+ FCB 87
+ FCB 66
+ FCB 78
+ FCB 89
+ FCB 88
+ FCB 88
+ FCB 73
+ FCB 0
+ FCB 89
+ FCB 66
+ FCB 9
+ FCB 72
+ FCB 72
+ FCB 73
+ FCB 0xFF
+
+* Row 128:
+ FDB 0xd972
+
+* Row 128 data:
+ FCB 8
+ FCB 89
+ FCB 89
+ FCB 79
+ FCB 70
+ FCB 89
+ FCB 73
+ FCB 89
+ FCB 0
+ FCB 7
+ FCB 72
+ FCB 73
+ FCB $80|0,9
+ FCB 89
+ FCB 7
+ FCB 72
+ FCB $80|0,11
+ FCB 73
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB $80|0,3
+ FCB 79
+ FCB 88
+ FCB $80|89,6
+ FCB 78
+ FCB 89
+ FCB 87
+ FCB $80|70,8
+ FCB 72
+ FCB 9
+ FCB 72
+ FCB 9
+ FCB 79
+ FCB 9
+ FCB $80|70,3
+ FCB 72
+ FCB 0
+ FCB 9
+ FCB 66
+ FCB 89
+ FCB 87
+ FCB 89
+ FCB 89
+ FCB 87
+ FCB 87
+ FCB 72
+ FCB 0
+ FCB 89
+ FCB 72
+ FCB 78
+ FCB 0xFF
+
+* Row 129:
+ FDB 0xda13
+
+* Row 129 data:
+ FCB 89
+ FCB 89
+ FCB 87
+ FCB 70
+ FCB 72
+ FCB $80|0,3
+ FCB 72
+ FCB $80|0,11
+ FCB 89
+ FCB 7
+ FCB 72
+ FCB $80|0,15
+ FCB 73
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB 89
+ FCB 9
+ FCB 79
+ FCB 88
+ FCB $80|89,3
+ FCB 88
+ FCB 78
+ FCB 89
+ FCB 87
+ FCB 72
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB $80|70,3
+ FCB 89
+ FCB 87
+ FCB 72
+ FCB 0
+ FCB 80
+ FCB 87
+ FCB $80|70,3
+ FCB 71
+ FCB 0
+ FCB 87
+ FCB 66
+ FCB 9
+ FCB 89
+ FCB 89
+ FCB 77
+ FCB 72
+ FCB 70
+ FCB 80
+ FCB 9
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 0xFF
+
+* Row 130:
+ FDB 0xdab3
+
+* Row 130 data:
+ FCB 79
+ FCB 89
+ FCB 80
+ FCB 87
+ FCB 80
+ FCB 0
+ FCB 0
+ FCB 7
+ FCB 80
+ FCB $80|0,11
+ FCB 89
+ FCB 7
+ FCB 72
+ FCB $80|0,15
+ FCB 8
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB 89
+ FCB 73
+ FCB 89
+ FCB 88
+ FCB 9
+ FCB 79
+ FCB $80|89,3
+ FCB $80|79,3
+ FCB $80|70,5
+ FCB 72
+ FCB 87
+ FCB 72
+ FCB 72
+ FCB 73
+ FCB 9
+ FCB $80|70,4
+ FCB 72
+ FCB 9
+ FCB 70
+ FCB 66
+ FCB 9
+ FCB 8
+ FCB 88
+ FCB 89
+ FCB 89
+ FCB 72
+ FCB 73
+ FCB 89
+ FCB 87
+ FCB 89
+ FCB 88
+ FCB 0xFF
+
+* Row 131:
+ FDB 0xdb53
+
+* Row 131 data:
+ FCB 8
+ FCB 89
+ FCB 88
+ FCB 87
+ FCB 71
+ FCB 0
+ FCB 0
+ FCB 77
+ FCB 80
+ FCB 8
+ FCB $80|0,10
+ FCB 89
+ FCB 87
+ FCB 72
+ FCB $80|0,19
+ FCB 79
+ FCB 0
+ FCB 8
+ FCB 80
+ FCB 73
+ FCB 80
+ FCB $80|89,4
+ FCB 88
+ FCB 88
+ FCB 87
+ FCB 87
+ FCB $80|70,5
+ FCB 80
+ FCB 89
+ FCB 80
+ FCB 87
+ FCB $80|70,4
+ FCB 80
+ FCB 9
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 0
+ FCB 79
+ FCB 70
+ FCB 88
+ FCB 89
+ FCB 9
+ FCB $80|89,3
+ FCB 80
+ FCB $80|0,11
+ FCB 8
+ FCB 88
+ FCB 0xFF
+
+* Row 132:
+ FDB 0xdbf4
+
+* Row 132 data:
+ FCB 89
+ FCB 89
+ FCB 80
+ FCB 70
+ FCB 71
+ FCB 78
+ FCB 79
+ FCB 78
+ FCB 79
+ FCB 0
+ FCB 73
+ FCB $80|0,8
+ FCB 89
+ FCB 7
+ FCB 72
+ FCB $80|0,19
+ FCB 8
+ FCB 8
+ FCB 73
+ FCB 89
+ FCB 8
+ FCB 73
+ FCB 9
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 89
+ FCB 89
+ FCB 79
+ FCB 87
+ FCB $80|70,4
+ FCB 80
+ FCB 9
+ FCB 0
+ FCB 87
+ FCB $80|70,3
+ FCB 87
+ FCB 0
+ FCB 89
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 8
+ FCB 89
+ FCB 87
+ FCB 73
+ FCB 73
+ FCB 9
+ FCB $80|89,3
+ FCB $80|0,11
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 0xFF
+
+* Row 133:
+ FDB 0xdc94
+
+* Row 133 data:
+ FCB 9
+ FCB 89
+ FCB 88
+ FCB 80
+ FCB 70
+ FCB 72
+ FCB 89
+ FCB 88
+ FCB $80|78,3
+ FCB $80|0,8
+ FCB 89
+ FCB 9
+ FCB 72
+ FCB $80|0,19
+ FCB 73
+ FCB 0
+ FCB 80
+ FCB 9
+ FCB 73
+ FCB 78
+ FCB 0
+ FCB 8
+ FCB 89
+ FCB 89
+ FCB 79
+ FCB 89
+ FCB 78
+ FCB 88
+ FCB 79
+ FCB 72
+ FCB 70
+ FCB 70
+ FCB 89
+ FCB 0
+ FCB 9
+ FCB 9
+ FCB $80|70,3
+ FCB 72
+ FCB 80
+ FCB 9
+ FCB 70
+ FCB 70
+ FCB 0
+ FCB 0
+ FCB 79
+ FCB 89
+ FCB 72
+ FCB 0
+ FCB 8
+ FCB $80|89,4
+ FCB $80|0,5
+ FCB 9
+ FCB 87
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 87
+ FCB 70
+ FCB 89
+ FCB 70
+ FCB 72
+ FCB 0xFF
+
+* Row 134:
+ FDB 0xdd35
+
+* Row 134 data:
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB 79
+ FCB 89
+ FCB 88
+ FCB 73
+ FCB $80|0,7
+ FCB 89
+ FCB 7
+ FCB 72
+ FCB 73
+ FCB $80|0,18
+ FCB 8
+ FCB 0
+ FCB 79
+ FCB 0
+ FCB 89
+ FCB $80|0,3
+ FCB 79
+ FCB $80|89,4
+ FCB 88
+ FCB 88
+ FCB 71
+ FCB 79
+ FCB 87
+ FCB 80
+ FCB 0
+ FCB 0
+ FCB 9
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 87
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 9
+ FCB 89
+ FCB 89
+ FCB 73
+ FCB 0
+ FCB 79
+ FCB $80|89,3
+ FCB 80
+ FCB $80|0,5
+ FCB 87
+ FCB 71
+ FCB 73
+ FCB 0
+ FCB 7
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 89
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 0xFF
+
+* Row 135:
+ FDB 0xddd5
+
+* Row 135 data:
+ FCB 9
+ FCB 89
+ FCB 89
+ FCB 80
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 87
+ FCB 88
+ FCB 89
+ FCB 80
+ FCB $80|0,7
+ FCB 79
+ FCB 73
+ FCB 70
+ FCB 73
+ FCB $80|0,21
+ FCB 73
+ FCB 9
+ FCB 78
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB 9
+ FCB $80|89,5
+ FCB 79
+ FCB 88
+ FCB 9
+ FCB 80
+ FCB 0
+ FCB 0
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB 80
+ FCB 89
+ FCB 70
+ FCB 70
+ FCB 0
+ FCB 8
+ FCB 79
+ FCB 89
+ FCB 88
+ FCB 0
+ FCB 79
+ FCB $80|89,4
+ FCB 73
+ FCB $80|0,4
+ FCB 77
+ FCB 79
+ FCB 80
+ FCB 0
+ FCB 87
+ FCB 70
+ FCB 79
+ FCB $80|0,3
+ FCB 87
+ FCB 80
+ FCB 9
+ FCB 0xFF
+
+* Row 136:
+ FDB 0xde75
+
+* Row 136 data:
+ FCB 8
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 73
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB 78
+ FCB 89
+ FCB 78
+ FCB $80|0,6
+ FCB 9
+ FCB 80
+ FCB 70
+ FCB 80
+ FCB $80|0,22
+ FCB 8
+ FCB 88
+ FCB $80|0,3
+ FCB 73
+ FCB 88
+ FCB $80|89,6
+ FCB 80
+ FCB 73
+ FCB 0
+ FCB 9
+ FCB $80|70,3
+ FCB 71
+ FCB 9
+ FCB 70
+ FCB 70
+ FCB 71
+ FCB 8
+ FCB 80
+ FCB 0
+ FCB 78
+ FCB 73
+ FCB 79
+ FCB $80|89,5
+ FCB $80|0,4
+ FCB 89
+ FCB 72
+ FCB 0
+ FCB 0
+ FCB 87
+ FCB 70
+ FCB 87
+ FCB 87
+ FCB 72
+ FCB 89
+ FCB 89
+ FCB 70
+ FCB 70
+ FCB 9
+ FCB 0xFF
+
+* Row 137:
+ FDB 0xdf16
+
+* Row 137 data:
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 0
+ FCB 78
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB 8
+ FCB 89
+ FCB 88
+ FCB $80|0,5
+ FCB 8
+ FCB 80
+ FCB 70
+ FCB 80
+ FCB $80|0,21
+ FCB 8
+ FCB 0
+ FCB 79
+ FCB 73
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB 8
+ FCB 89
+ FCB 88
+ FCB $80|89,5
+ FCB 73
+ FCB 0
+ FCB 87
+ FCB $80|70,3
+ FCB 80
+ FCB 87
+ FCB 70
+ FCB 72
+ FCB 0
+ FCB 89
+ FCB 89
+ FCB 78
+ FCB 0
+ FCB 9
+ FCB $80|89,5
+ FCB 80
+ FCB $80|0,3
+ FCB 9
+ FCB 87
+ FCB 72
+ FCB 89
+ FCB 87
+ FCB 70
+ FCB 80
+ FCB 9
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 87
+ FCB $80|9,3
+ FCB 80
+ FCB 0xFF
+
+* Row 138:
+ FDB 0xdfb6
+
+* Row 138 data:
+ FCB 8
+ FCB $80|89,3
+ FCB 0
+ FCB 89
+ FCB $80|70,3
+ FCB 72
+ FCB 78
+ FCB 79
+ FCB 88
+ FCB $80|0,6
+ FCB 7
+ FCB 71
+ FCB $80|0,10
+ FCB 72
+ FCB $80|0,11
+ FCB 8
+ FCB 9
+ FCB $80|0,3
+ FCB 8
+ FCB 73
+ FCB 88
+ FCB 89
+ FCB 78
+ FCB 88
+ FCB 0
+ FCB 78
+ FCB 89
+ FCB 0
+ FCB 9
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 89
+ FCB 8
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 9
+ FCB 89
+ FCB 78
+ FCB 0
+ FCB $80|89,5
+ FCB 79
+ FCB 89
+ FCB 0
+ FCB 0
+ FCB 73
+ FCB 89
+ FCB 87
+ FCB $80|70,4
+ FCB 72
+ FCB 0
+ FCB 87
+ FCB 72
+ FCB 88
+ FCB 0
+ FCB 9
+ FCB 72
+ FCB 0
+ FCB 7
+ FCB 70
+ FCB 73
+ FCB 0xFF
+
+* Row 139:
+ FDB 0xe057
+
+* Row 139 data:
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 8
+ FCB 87
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB 0
+ FCB 78
+ FCB 73
+ FCB $80|0,3
+ FCB 8
+ FCB 72
+ FCB 0
+ FCB 71
+ FCB $80|0,9
+ FCB 77
+ FCB $80|0,12
+ FCB 73
+ FCB 0
+ FCB 8
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB 8
+ FCB 78
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 73
+ FCB 0
+ FCB 78
+ FCB 0
+ FCB 9
+ FCB $80|70,3
+ FCB 73
+ FCB 79
+ FCB 70
+ FCB 80
+ FCB 9
+ FCB 89
+ FCB 88
+ FCB 0
+ FCB 73
+ FCB $80|89,3
+ FCB 88
+ FCB 9
+ FCB 89
+ FCB 80
+ FCB 0
+ FCB 8
+ FCB 79
+ FCB $80|89,3
+ FCB $80|70,3
+ FCB 80
+ FCB $80|0,7
+ FCB 79
+ FCB 79
+ FCB 87
+ FCB 72
+ FCB 0xFF
+
+* Row 140:
+ FDB 0xe0f7
+
+* Row 140 data:
+ FCB 8
+ FCB $80|89,3
+ FCB 79
+ FCB 79
+ FCB 89
+ FCB 72
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB $80|0,4
+ FCB 7
+ FCB 89
+ FCB 0
+ FCB 0
+ FCB 7
+ FCB $80|0,8
+ FCB 9
+ FCB 80
+ FCB $80|0,9
+ FCB 8
+ FCB $80|0,9
+ FCB 73
+ FCB 73
+ FCB 79
+ FCB 89
+ FCB 88
+ FCB 8
+ FCB 0
+ FCB 0
+ FCB 89
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB 0
+ FCB 87
+ FCB 80
+ FCB 0
+ FCB 78
+ FCB 89
+ FCB 0
+ FCB 73
+ FCB 79
+ FCB $80|89,3
+ FCB 0
+ FCB 89
+ FCB 89
+ FCB 0
+ FCB 0
+ FCB 78
+ FCB 80
+ FCB 80
+ FCB 0
+ FCB 79
+ FCB 87
+ FCB 70
+ FCB 72
+ FCB $80|0,3
+ FCB 9
+ FCB 73
+ FCB $80|0,3
+ FCB 89
+ FCB 0
+ FCB 9
+ FCB 70
+ FCB 73
+ FCB 0xFF
+
+* Row 141:
+ FDB 0xe198
+
+* Row 141 data:
+ FCB 9
+ FCB $80|89,3
+ FCB 8
+ FCB 73
+ FCB 80
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 89
+ FCB 80
+ FCB 0
+ FCB 73
+ FCB 89
+ FCB 80
+ FCB 9
+ FCB 71
+ FCB 70
+ FCB $80|0,8
+ FCB 72
+ FCB 0
+ FCB 73
+ FCB $80|0,9
+ FCB 8
+ FCB $80|0,8
+ FCB 8
+ FCB 9
+ FCB 79
+ FCB 89
+ FCB 88
+ FCB $80|0,3
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 9
+ FCB 72
+ FCB $80|0,4
+ FCB 78
+ FCB $80|89,4
+ FCB 0
+ FCB 89
+ FCB 89
+ FCB 80
+ FCB 0
+ FCB 73
+ FCB 73
+ FCB 88
+ FCB 89
+ FCB 89
+ FCB 0
+ FCB 79
+ FCB 70
+ FCB 70
+ FCB 88
+ FCB 0
+ FCB 0
+ FCB 9
+ FCB 66
+ FCB $80|0,6
+ FCB 9
+ FCB 66
+ FCB 0xFF
+
+* Row 142:
+ FDB 0xe239
+
+* Row 142 data:
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 88
+ FCB 9
+ FCB 89
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB 88
+ FCB 0
+ FCB 89
+ FCB 80
+ FCB 0
+ FCB 7
+ FCB 88
+ FCB 77
+ FCB 66
+ FCB $80|0,6
+ FCB 89
+ FCB 0
+ FCB 8
+ FCB $80|0,11
+ FCB 8
+ FCB 73
+ FCB $80|0,7
+ FCB 78
+ FCB 89
+ FCB 79
+ FCB 73
+ FCB 0
+ FCB 0
+ FCB 89
+ FCB $80|70,3
+ FCB 80
+ FCB 87
+ FCB 66
+ FCB 0
+ FCB 0
+ FCB 79
+ FCB $80|89,4
+ FCB 88
+ FCB 0
+ FCB 9
+ FCB 89
+ FCB 88
+ FCB 0
+ FCB 0
+ FCB 8
+ FCB 0
+ FCB 9
+ FCB 73
+ FCB 89
+ FCB 9
+ FCB 8
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 87
+ FCB 73
+ FCB $80|0,7
+ FCB 80
+ FCB 0xFF
+
+* Row 143:
+ FDB 0xe2da
+
+* Row 143 data:
+ FCB $80|89,4
+ FCB 79
+ FCB 78
+ FCB 9
+ FCB 70
+ FCB 70
+ FCB 89
+ FCB 73
+ FCB 0
+ FCB 8
+ FCB 73
+ FCB 0
+ FCB 0
+ FCB 78
+ FCB 80
+ FCB $80|0,5
+ FCB 79
+ FCB 0
+ FCB 0
+ FCB 73
+ FCB $80|0,5
+ FCB 73
+ FCB $80|0,4
+ FCB 80
+ FCB 80
+ FCB 8
+ FCB $80|0,7
+ FCB 73
+ FCB 79
+ FCB 78
+ FCB 0
+ FCB 0
+ FCB 89
+ FCB 87
+ FCB 70
+ FCB 70
+ FCB 72
+ FCB 0
+ FCB 70
+ FCB 0
+ FCB 0
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 78
+ FCB 73
+ FCB 0
+ FCB 9
+ FCB 89
+ FCB 89
+ FCB 73
+ FCB 0
+ FCB 8
+ FCB 79
+ FCB 89
+ FCB 89
+ FCB 88
+ FCB 0
+ FCB 89
+ FCB 80
+ FCB 79
+ FCB 70
+ FCB 70
+ FCB 80
+ FCB 0
+ FCB 87
+ FCB 0xFF
+
+* Total 6652

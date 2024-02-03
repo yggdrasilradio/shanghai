@@ -2869,7 +2869,7 @@ MTBL
 VICTOR
  CLR WON
  TST COUNT
- BNE XVIC * Comment this out and any tile match wins the game
+*BNE XVIC * Comment this out and any tile match wins the game
  INC WON
 
 *okay, somebody done won it!
@@ -2898,7 +2898,7 @@ A@
  LBSR DRIVER
 
  * LDD #$050E
- LDD #$0515 position of message
+ LDD #$050F position of message
  LBSR CPOS
  LEAU VTMP,PCR
  LBSR MSG
