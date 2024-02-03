@@ -2869,7 +2869,7 @@ MTBL
 VICTOR
  CLR WON
  TST COUNT
-*BNE XVIC * Comment this out and any tile match wins the game
+ BNE XVIC * Comment this out and any tile match wins the game
  INC WON
 
 *okay, somebody done won it!
