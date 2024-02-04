@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+with open("title.vef", "rb") as FILE:
+
+	# Throw away the header
+	bytedata = FILE.read(18)
+
+	# Everything else is pixel data
+	for i in range(0, 200):
+
+		# Print values for every byte in this row
+		for j in range(160):
+			bytedata = bytearray(FILE.read(1))
+			value = bytedata[0]
+			print(value)

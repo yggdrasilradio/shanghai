@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+
+with open("victory.vef", "rb") as FILE:
+
+	# Throw away the header
+	bytedata = FILE.read(18)
+
+	# Everything else is pixel data
+	for i in range(0, 200):
+
+		for j in range(160):
+			bytedata = FILE.read(1)
+			value = ord(bytedata)
+			color1 = int((value & 0xf0) / 16)
+			color2 = int(value & 0x0f)
+			print(str(color1))
+			print(str(color2))
+			
+
