@@ -12,24 +12,27 @@
 * Title page menu
 *
 TPMENU
- FCB 1,10
+*FCB 19,1
+ FCB 21,1
  FDB Z@-*
  FDB MZAP-*
 RGBSEL
- FCB 20,1   column, row
+*FCB 12,1   column, row
+ FCB 13,1   column, row
  FDB A@-*
  FDB MRGB-*
 CMPSEL
- FCB 27,1
+*FCB 26,1
+ FCB 29,1
  FDB B@-*
  FDB MCMP-*
  FCB $FF
 A@
- FCN "@ RGB"
+ FCN "@ RGB1"
 B@
  FCN "@ Composite"
 Z@
- FCN " "
+ FCN "@ RGB2"
 
 * Main menu
 *
@@ -382,9 +385,9 @@ A@
  LBHI UMENUX
  LDD TEMPY
  CMPD ITEMY1
- BLO UMENUX
+ LBLO UMENUX
  CMPD ITEMY2
- BHI UMENUX
+ LBHI UMENUX
 
 * pointing to this item!
  LDD MNUPTR
@@ -437,6 +440,12 @@ A@
  LEAU CMPSET,PCR
  LBSR CLRSET
 B@
+ LEAU TPMENU,PCR
+ CMPU MNUPTR
+ BNE C@
+ LEAU ZAPSET,PCR
+ LBSR CLRSET
+C@
  LDU MNUPTR
  LDD ,U++
  LBSR CPOS

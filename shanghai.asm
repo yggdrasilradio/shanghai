@@ -1,4 +1,4 @@
-*
+
 * Shanghai - Color Computer 3 version
 *
 * (c) copyright 1987 Activision
@@ -291,7 +291,7 @@ MOK
 
  LDD #$0101
  LBSR CPOS
- LEAU TITLE1,PCR "choose color set"
+ LEAU TITLE1,PCR "color set"
  LBSR MSG
  LBSR CHIME
 
@@ -300,7 +300,7 @@ MOK
  LBRA TMENUS
 
 TITLE1
- FCN "Choose color set:"
+ FCN "color set:"
 TITLE2
  FCC "* 1986-87 "
  FCN "Activision, Inc."
@@ -2869,7 +2869,7 @@ MTBL
 VICTOR
  CLR WON
  TST COUNT
- BNE XVIC * Comment this out and any tile match wins the game
+*BNE XVIC * Comment this out and any tile match wins the game
  INC WON
 
 *okay, somebody done won it!
