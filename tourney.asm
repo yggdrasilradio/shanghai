@@ -100,6 +100,8 @@ PROMPT
 * B = ASCII CHARACTER
 *
 INKEY
+ PSHS CC
+ ORCC #$50	* turn off interrupts
  INC ROMSON
  LBSR TASK1
  STA $FFDE
@@ -110,7 +112,7 @@ A@
  LBSR TASK0
  CLR ROMSON
  STA $FFDF
- RTS
+ PULS CC,PC	* turn on IRQ and return
 
 * clear scoreboard
 CLBORD
