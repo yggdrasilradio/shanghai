@@ -2308,10 +2308,12 @@ UTMSG
 
 IRQ
 
-* Here, hold my beer...
-* CLR $FFD8    slow CPU
+* Check for BREAK key
+ lda $ff02
+ pshs a
  jsr kbcheck
-* CLR $FFD9    fast CPU
+ puls a
+ sta $ff02
 
  CLR $FFDF turn off ROMs
  CLRA
