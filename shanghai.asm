@@ -334,6 +334,8 @@ C@
 MCMP
  LEAU CMPSET,PCR
  LBSR CLRSET
+ LDB #$80 turn on color burst for composite
+ STB $FF98 video mode register
 INIT
  LBSR GDRAGN
 
@@ -1187,7 +1189,7 @@ CLS0
 VINIT
  LDB #$4C  mmu enabled
  STB $FF90 initialization register
- LDB #$80
+ LDB #$90 turn off color burst for default RGB
  STB $FF98 video mode register
  LDB #$3E 200 lpf
 ;LDB #$7E 225 lpf?
