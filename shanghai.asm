@@ -44,7 +44,7 @@ FIND1  RMB 1
 FIND2  RMB 1
 BORDF  RMB 1 "in border" flag
 FACE   RMB 5
-TLPOS  RMB 1
+TLPOS  RMB 1 tile position
 TMOUT  RMB 1 number of timeouts
 SCORES RMB 2 challenge match scores
 NAMPTR RMB 2
@@ -71,8 +71,8 @@ COUNT  RMB 1
 MNUPTR RMB 2
 CMASK  RMB 1
 CURSXY RMB 2
-SEED1  RMB 1
-SEED2  RMB 1
+SEED1  RMB 1 random number seed 1
+SEED2  RMB 1 random number seed 2
 LSW    RMB 1
 RSW    RMB 1
 CURSX  RMB 2
@@ -81,7 +81,7 @@ TILEX  RMB 2
 TILEY  RMB 1
 TEMPX  RMB 2
 TEMPY  RMB 2
-HFLAG  RMB 1
+HFLAG  RMB 1 text highlighting flag
 ITEMX1 RMB 2
 ITEMX2 RMB 2
 ITEMY1 RMB 2
